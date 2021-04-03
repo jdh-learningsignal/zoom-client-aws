@@ -1,8 +1,16 @@
-import React from 'react';
+import {React, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { API } from 'aws-amplify';
+import { listTraffics } from './graphql/queries';
+import { createTraffic as createTrafficMutation} from './graphql/mutations';
+
+const initialTrafficState = { studentId: 'rapido300@hanyang.ac.kr', meetingId: '1000000000', state: ''}
 
 function App() {
+  const [traffics, setTraffics] = useState({});
+  const [trafficData, setTrafficData] = useState(initialTrafficState);
+
   return (
     <div className="App">
       <h1>Traffic Test</h1>
