@@ -5,23 +5,26 @@ import { API } from 'aws-amplify';
 import { listTraffics } from './graphql/queries';
 import { createTraffic as createTrafficMutation} from './graphql/mutations';
 
-const initialTrafficState = { studentId: 'rapido300@hanyang.ac.kr', meetingId: '1000000000', state: ''}
-
 function App() {
-  const [trafficData, setTrafficData] = useState(initialTrafficState);
-
   useEffect(() => {}, []);
 
-  async function sendTraffic() {
-    if (!trafficData.name || !trafficData.description) return;
-    await API.graphql({ query: createTrafficMutation, variables: { input: trafficData } });
-    setTrafficData(initialTrafficState);
+  async function sendTraffic(state) {
+    if (!state) return;
+    await API.graphql({ 
+      query: createTrafficMutation, 
+      variables: { 
+        input: {
+          studentId: 'rapido300@hanyang.ac.kr', 
+          meetingId: '1000000000', 
+          state: state 
+        }
+      } 
+    });
   }
 
-  function onClickButton(e) {
-    setTrafficData({ ...trafficData, 'state': e.target.value});
-    sendTraffic();
-  }
+  const onClickButton = e => {
+    sendTraffic(e.target.value);
+  };
 
   return (
     <div className="App">
