@@ -16,7 +16,8 @@ function App() {
         input: {
           studentId: 'rapido300@hanyang.ac.kr', 
           meetingId: '1000000000', 
-          state: state 
+          state: state,
+          dateTime: Date.now()
         }
       } 
     });

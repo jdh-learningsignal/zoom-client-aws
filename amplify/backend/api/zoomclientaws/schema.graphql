@@ -3,4 +3,5 @@ type Traffic @model {
   studentId: String!
   meetingId: String!
   state: String!
+  dateTime: AWSDateTime!
 }

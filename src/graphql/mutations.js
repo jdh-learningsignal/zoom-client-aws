@@ -11,6 +11,7 @@ export const createTraffic = /* GraphQL */ `
       studentId
       meetingId
       state
+      dateTime
       createdAt
       updatedAt
     }
@@ -26,6 +27,7 @@ export const updateTraffic = /* GraphQL */ `
       studentId
       meetingId
       state
+      dateTime
       createdAt
       updatedAt
     }
@@ -41,6 +43,7 @@ export const deleteTraffic = /* GraphQL */ `
       studentId
       meetingId
       state
+      dateTime
       createdAt
       updatedAt
     }

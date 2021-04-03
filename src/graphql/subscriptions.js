@@ -8,6 +8,7 @@ export const onCreateTraffic = /* GraphQL */ `
       studentId
       meetingId
       state
+      dateTime
       createdAt
       updatedAt
     }
@@ -20,6 +21,7 @@ export const onUpdateTraffic = /* GraphQL */ `
       studentId
       meetingId
       state
+      dateTime
       createdAt
       updatedAt
     }
@@ -32,6 +34,7 @@ export const onDeleteTraffic = /* GraphQL */ `
       studentId
       meetingId
       state
+      dateTime
       createdAt
       updatedAt
     }

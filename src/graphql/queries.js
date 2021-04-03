@@ -8,6 +8,7 @@ export const getTraffic = /* GraphQL */ `
       studentId
       meetingId
       state
+      dateTime
       createdAt
       updatedAt
     }
@@ -25,6 +26,7 @@ export const listTraffics = /* GraphQL */ `
         studentId
         meetingId
         state
+        dateTime
         createdAt
         updatedAt
       }
