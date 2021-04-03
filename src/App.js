@@ -1,23 +1,28 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Traffic Test</h1>
+      <div style={{display:"flex", position:"fixed", top:"80%", left:"70%", right:"0"}}>
+        <button onClick={}
+                placeholder="매우 어려움"
+                value="RED"
+                style={{backgroundColor:"red", width:"100px", height:"100px"}}
+        />
+        <button onClick={}
+                placeholder="약간 어려움"
+                value="YELLOW"
+                style={{backgroundColor:"yellow", width:"100px", height:"100px"}}
+        />
+        <button onClick={}
+                placeholder="너무 쉬움"
+                value="GREEN"
+                style={{backgroundColor:"green", width:"100px", height:"100px"}}
+        />
+      </div>
     </div>
   );
 }
