@@ -180,8 +180,7 @@ function App() {
         style={{
           position:"fixed", 
           bottom:"282px", 
-          right:"0%", 
-          right:"0", 
+          left:"3%", 
           zIndex:"100000"}}>
           <TrafficButton onClick={onClickButton} color="red" value="RED">
             어려<br/>워요
@@ -191,8 +190,7 @@ function App() {
         style={{
           position:"fixed", 
           bottom:"217px", 
-          right:"0%", 
-          right:"0", 
+          left:"3%",
           zIndex:"100000"}}>
           <TrafficButton onClick={onClickButton} color="grey" value="GREY">
             지루<br/>해요
@@ -202,8 +200,7 @@ function App() {
         style={{
           position:"fixed", 
           bottom:"152px", 
-          right:"0%", 
-          right:"0", 
+          left:"3%", 
           zIndex:"100000"}}>
           <TrafficButton onClick={onClickButton} color="yellow" value="YELLOW">
             헷갈<br/>려요
@@ -213,8 +210,7 @@ function App() {
         style={{
           position:"fixed", 
           bottom:"87px", 
-          right:"0%", 
-          right:"0", 
+          left:"3%",
           zIndex:"100000"}}>
           <TrafficButton onClick={onClickButton} color="green" value="GREEN">
             알겠<br/>어요
