@@ -16,8 +16,8 @@ const crypto = require('crypto');
 function App() {
   const apiKey = 'gpyibdvWRaKeXWf_1x3yZA';
   const apiSecret = 'LmDzEXT9nxRv7SCI2rwXn82phJDuOCzQDRtB';
-  const meetingNumber = '8476497784';
-  const passWord = 'u4UrS5';
+  const meetingNumber = '4515514600';
+  const passWord = '951810';
   let role = 0;
   let leaveUrl = window.location.href.includes("localhost") ? "http://localhost:3000":"https://master.dg7q46trqte00.amplifyapp.com/";
 
