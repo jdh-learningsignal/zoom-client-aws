@@ -8,11 +8,9 @@ import { createFile as createFileMutation} from './graphql/mutations';
 import { withAuthenticator, AmplifySignOut, AmplifyLink } from '@aws-amplify/ui-react'
 import { createHmac } from 'crypto';
 
-// import {} from 'pdfjs-dist';
-
 const Upload = () => {
     const [material, setMaterial] = useState({ name: '', hash: '' });
-    const startButton = useRef(null);
+    const startButtonRef = useRef(null);
 
     const onChangeFile = async (e) => {
         if (!e.target.files[0]) return;
@@ -23,7 +21,7 @@ const Upload = () => {
         
         await Storage.put(hash, file);
         await insertFile(file.name, hash);
-        startButton.current.style.display = "" 
+        startButtonRef.current.style.display = "" 
     };
 
     const insertFile = async (name, hash) => {
@@ -41,7 +39,7 @@ const Upload = () => {
     };
 
     return (
-        <Fragment>
+        <>
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
@@ -54,8 +52,8 @@ const Upload = () => {
                     </div>
                 </div>
             </div>
-            <Link ref={startButton} to={`/lecture/${material.hash}`} style={{display:"none"}}>강의 시작</Link>
-        </Fragment>
+            <Link ref={startButtonRef} to={`/lecture/${material.hash}`} style={{display:"none"}}>강의 시작</Link>
+        </>
     );
 };
 

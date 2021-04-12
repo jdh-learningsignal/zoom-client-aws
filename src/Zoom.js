@@ -18,8 +18,8 @@ const Zoom = () => {
   const devUrl = "https://master.dg7q46trqte00.amplifyapp.com/";
   const realUrl = "https://zoom-client.learningsignal.com/";
   const href = window.location.href;
-  let leaveUrl = href.includes("localhost") ? "http://localhost:3000" : href.includes("amplifyapp") ? devUrl : realUrl;
-  let role = new URLSearchParams(window.location.search).get('prof') == 1 ? 1 : 0;
+  const leaveUrl = href.includes("localhost") ? "http://localhost:3000" : href.includes("amplifyapp") ? devUrl : realUrl;
+  const role = new URLSearchParams(window.location.search).get('prof') === 1 ? 1 : 0;
   
   const [userName, setUserName] = useState('');
   const [studentId, setStudentId] = useState('');

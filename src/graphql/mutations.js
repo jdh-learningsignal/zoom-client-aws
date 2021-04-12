@@ -91,3 +91,51 @@ export const deleteFile = /* GraphQL */ `
     }
   }
 `;
+export const createPage = /* GraphQL */ `
+  mutation CreatePage(
+    $input: CreatePageInput!
+    $condition: ModelPageConditionInput
+  ) {
+    createPage(input: $input, condition: $condition) {
+      id
+      hash
+      numPages
+      pageNumber
+      finishedTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePage = /* GraphQL */ `
+  mutation UpdatePage(
+    $input: UpdatePageInput!
+    $condition: ModelPageConditionInput
+  ) {
+    updatePage(input: $input, condition: $condition) {
+      id
+      hash
+      numPages
+      pageNumber
+      finishedTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePage = /* GraphQL */ `
+  mutation DeletePage(
+    $input: DeletePageInput!
+    $condition: ModelPageConditionInput
+  ) {
+    deletePage(input: $input, condition: $condition) {
+      id
+      hash
+      numPages
+      pageNumber
+      finishedTime
+      createdAt
+      updatedAt
+    }
+  }
+`;

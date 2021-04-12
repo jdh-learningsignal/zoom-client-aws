@@ -11,3 +11,11 @@ type File @model {
   name: String!
   hash: String!
 }
+
+type Page @model {
+  id: ID!
+  hash: String!
+  numPages: Int!
+  pageNumber: Int!
+  finishedTime: AWSDateTime!
+}

@@ -73,3 +73,42 @@ export const onDeleteFile = /* GraphQL */ `
     }
   }
 `;
+export const onCreatePage = /* GraphQL */ `
+  subscription OnCreatePage {
+    onCreatePage {
+      id
+      hash
+      numPages
+      pageNumber
+      finishedTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePage = /* GraphQL */ `
+  subscription OnUpdatePage {
+    onUpdatePage {
+      id
+      hash
+      numPages
+      pageNumber
+      finishedTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePage = /* GraphQL */ `
+  subscription OnDeletePage {
+    onDeletePage {
+      id
+      hash
+      numPages
+      pageNumber
+      finishedTime
+      createdAt
+      updatedAt
+    }
+  }
+`;

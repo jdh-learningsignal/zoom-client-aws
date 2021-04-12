@@ -63,3 +63,36 @@ export const listFiles = /* GraphQL */ `
     }
   }
 `;
+export const getPage = /* GraphQL */ `
+  query GetPage($id: ID!) {
+    getPage(id: $id) {
+      id
+      hash
+      numPages
+      pageNumber
+      finishedTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPages = /* GraphQL */ `
+  query ListPages(
+    $filter: ModelPageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        hash
+        numPages
+        pageNumber
+        finishedTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
