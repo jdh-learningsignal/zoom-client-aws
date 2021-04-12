@@ -15,7 +15,7 @@ const Lecture = () => {
     const [file, setFile] = useState('');
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
-    const [scale, setScale] = useState(1.1);
+    const [scale, setScale] = useState(1.0);
     const [pageDatas, setPageDatas] = useState(null);
 
     useEffect(() => {
@@ -109,10 +109,12 @@ const Lecture = () => {
                         <Document
                             file={file}
                             onLoadSuccess={onDocumentLoadSuccess}
+                            width={'100%'}
                         >
                             <Page 
                                 pageNumber={pageNumber}
-                                scale={scale}
+                                // scale={100}
+                                width={800}
                             />
                         </Document>
                         <div>{pageNumber} / {numPages}</div>
@@ -121,40 +123,40 @@ const Lecture = () => {
                     </Col>
                     <Col sm={3}>
                         <Chart
-                            width={'400px'}
-                            height={'300px'}
+                            width={'100%'}
+                            height={'33%'}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
                                 ['응답', '횟수'],
-                                ['어려워요', 45],
-                                ['알겠어요', 34]
+                                ['알겠어요', 45],
+                                ['어려워요', 34]
                             ]}
                             options={{
                                 title: '총 응답',
                             }}
                         />
                         <Chart
-                            width={'400px'}
-                            height={'300px'}
+                            width={'100%'}
+                            height={'33%'}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
                                 ['응답', '횟수'],
-                                ['어려워요', 11],
-                                ['알겠어요', 2]
+                                ['알겠어요', 11],
+                                ['어려워요', 2]
                             ]}
                             options={{
                                 title: '이전 슬라이드 응답',
                             }}
                         />
                         <Chart
-                            width={'500px'}
-                            height={'350px'}
+                            width={'100%'}
+                            height={'34%'}
                             chartType="LineChart"
                             loader={<div>Loading...</div>}
                             data={[
-                                ['x', '어려워요', '알겠어요'],
+                                ['x', '알겠어요', '어려워요'],
                                 [0, 0, 0],
                                 [1, 10, 5],
                                 [2, 23, 15],
@@ -173,7 +175,6 @@ const Lecture = () => {
                                 }
                             }}
                         />
-                        <div>{pageDatas}</div>
                     </Col>
                 </Row>
             </Container>

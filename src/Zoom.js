@@ -43,12 +43,22 @@ const Zoom = () => {
     background-color: ${props => props.color || "white"};
     font-size: revert;
     font-weight: bold;
-
+    text-decoration:none;
+    position:relative;
+    
     &:hover {
       background-color: #fff;
       box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.5);
       color: #000;
       transform: translateY(-2px);
+    }
+
+    &:active {
+      top:5px;
+      left:5px;
+    }
+    &:active:after {
+      border:0;
     }
   `;
   
@@ -183,31 +193,11 @@ const Zoom = () => {
         <div 
         style={{
           position:"fixed", 
-          bottom:"282px", 
+          bottom:"152px", 
           left:"3%", 
           zIndex:"100000"}}>
           <TrafficButton onClick={onClickButton} color="red" value="RED">
             어려<br/>워요
-          </TrafficButton>
-        </div>
-        <div 
-        style={{
-          position:"fixed", 
-          bottom:"217px", 
-          left:"3%",
-          zIndex:"100000"}}>
-          <TrafficButton onClick={onClickButton} color="grey" value="GREY">
-            지루<br/>해요
-          </TrafficButton>
-        </div>
-        <div 
-        style={{
-          position:"fixed", 
-          bottom:"152px", 
-          left:"3%", 
-          zIndex:"100000"}}>
-          <TrafficButton onClick={onClickButton} color="yellow" value="YELLOW">
-            헷갈<br/>려요
           </TrafficButton>
         </div>
         <div 
