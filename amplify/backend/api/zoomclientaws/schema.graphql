@@ -5,3 +5,9 @@ type Traffic @model {
   state: String!
   dateTime: AWSDateTime!
 }
+
+type File @model {
+  id: ID!
+  name: String!
+  hash: String!
+}

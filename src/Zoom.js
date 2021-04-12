@@ -1,6 +1,6 @@
-import {React, useState, useEffect, useRef} from 'react';
+import { React, useState, useEffect, useRef } from 'react';
 import styled from "styled-components";
-// import './App.css';
+import './Zoom.css';
 import { API } from 'aws-amplify';
 import { createTraffic as createTrafficMutation} from './graphql/mutations';
 import { ZoomMtg } from '@zoomus/websdk';
@@ -10,20 +10,19 @@ ZoomMtg.setZoomJSLib('https://source.zoom.us/1.9.1/lib', '/av');
 ZoomMtg.preLoadWasm();
 ZoomMtg.prepareJssdk();
 
-const crypto = require('crypto');
-
 const Zoom = () => {
   const apiKey = 'gpyibdvWRaKeXWf_1x3yZA';
   const apiSecret = 'LmDzEXT9nxRv7SCI2rwXn82phJDuOCzQDRtB';
   const meetingNumber = '4515514600';
   const passWord = '951810';
+  const devUrl = "https://master.dg7q46trqte00.amplifyapp.com/";
+  const realUrl = "https://zoom-client.learningsignal.com/";
+  const href = window.location.href;
+  let leaveUrl = href.includes("localhost") ? "http://localhost:3000" : href.includes("amplifyapp") ? devUrl : realUrl;
   let role = new URLSearchParams(window.location.search).get('prof') == 1 ? 1 : 0;
-
-  let leaveUrl = window.location.href.includes("localhost") ? "http://localhost:3000" : "https://master.dg7q46trqte00.amplifyapp.com/";
-
+  
   const [userName, setUserName] = useState('');
   const [studentId, setStudentId] = useState('');
-
   const divTL = useRef(null);
 
   const TrafficButton = styled.button`
@@ -97,7 +96,7 @@ const Zoom = () => {
     })
   }
 
-  async function sendTraffic(state) {
+  const sendTraffic = async (state) => {
     if (!state || !studentId) return;
 
     await API.graphql({ 

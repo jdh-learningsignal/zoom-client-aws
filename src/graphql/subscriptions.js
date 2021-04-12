@@ -40,3 +40,36 @@ export const onDeleteTraffic = /* GraphQL */ `
     }
   }
 `;
+export const onCreateFile = /* GraphQL */ `
+  subscription OnCreateFile {
+    onCreateFile {
+      id
+      name
+      hash
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateFile = /* GraphQL */ `
+  subscription OnUpdateFile {
+    onUpdateFile {
+      id
+      name
+      hash
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteFile = /* GraphQL */ `
+  subscription OnDeleteFile {
+    onDeleteFile {
+      id
+      name
+      hash
+      createdAt
+      updatedAt
+    }
+  }
+`;

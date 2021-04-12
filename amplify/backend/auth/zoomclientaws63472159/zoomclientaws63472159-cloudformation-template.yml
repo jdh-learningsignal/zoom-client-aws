@@ -117,7 +117,6 @@ Parameters:
   userPoolGroupList:
     Type: CommaDelimitedList
       
-            
   serviceName:
     Type: String
   
@@ -130,6 +129,27 @@ Parameters:
   dependsOn:
     Type: CommaDelimitedList
       
+  
+  userPoolGroups:
+    Type: String
+            
+  
+  adminQueries:
+    Type: String
+            
+            
+  
+  thirdPartyAuth:
+    Type: String
+            
+        
+  authProviders:
+    Type: CommaDelimitedList
+      
+  
+  hostedUI:
+    Type: String
+            
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
   
@@ -193,9 +213,6 @@ Resources:
       
       AutoVerifiedAttributes: !Ref autoVerifiedAttributes
       
-      
-      EmailVerificationMessage: !Ref emailVerificationMessage
-      EmailVerificationSubject: !Ref emailVerificationSubject
       
       Policies:
         PasswordPolicy:

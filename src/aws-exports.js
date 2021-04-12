@@ -11,7 +11,9 @@ const awsmobile = {
     "aws_cognito_region": "ap-northeast-2",
     "aws_user_pools_id": "ap-northeast-2_pFuKNkm89",
     "aws_user_pools_web_client_id": "1e4h9mt0ft4hrgcdukvda69tnh",
-    "oauth": {}
+    "oauth": {},
+    "aws_user_files_s3_bucket": "lecture113543-staging",
+    "aws_user_files_s3_bucket_region": "ap-northeast-2"
 };
 
 

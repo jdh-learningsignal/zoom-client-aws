@@ -25,5 +25,11 @@
       "customAuth": false
     }
   },
-  "function": {}
+  "function": {},
+  "storage": {
+    "pdfstorage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  }
 }
