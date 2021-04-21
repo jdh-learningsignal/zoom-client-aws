@@ -10,6 +10,7 @@ export const createTraffic = /* GraphQL */ `
       id
       studentId
       meetingId
+      hash
       state
       dateTime
       createdAt
@@ -26,6 +27,7 @@ export const updateTraffic = /* GraphQL */ `
       id
       studentId
       meetingId
+      hash
       state
       dateTime
       createdAt
@@ -42,6 +44,7 @@ export const deleteTraffic = /* GraphQL */ `
       id
       studentId
       meetingId
+      hash
       state
       dateTime
       createdAt
@@ -58,6 +61,7 @@ export const createFile = /* GraphQL */ `
       id
       name
       hash
+      uploadedTime
       createdAt
       updatedAt
     }
@@ -72,6 +76,7 @@ export const updateFile = /* GraphQL */ `
       id
       name
       hash
+      uploadedTime
       createdAt
       updatedAt
     }
@@ -86,6 +91,7 @@ export const deleteFile = /* GraphQL */ `
       id
       name
       hash
+      uploadedTime
       createdAt
       updatedAt
     }

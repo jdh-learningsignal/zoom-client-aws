@@ -1,29 +1,33 @@
-import { React, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from "styled-components";
-import './Zoom.css';
 import { API } from 'aws-amplify';
-import { createTraffic as createTrafficMutation} from './graphql/mutations';
+import { createTraffic as createTrafficMutation } from './graphql/mutations';
 import { ZoomMtg } from '@zoomus/websdk';
 import { createHmac } from 'crypto';
+import { useLocation } from 'react-router-dom';
+
+import './Zoom.css';
 
 ZoomMtg.setZoomJSLib('https://source.zoom.us/1.9.1/lib', '/av');
 ZoomMtg.preLoadWasm();
 ZoomMtg.prepareJssdk();
 
+const apiKey = 'gpyibdvWRaKeXWf_1x3yZA';
+const apiSecret = 'LmDzEXT9nxRv7SCI2rwXn82phJDuOCzQDRtB';
+const devUrl = "https://master.dg7q46trqte00.amplifyapp.com/";
+const realUrl = "https://zoom-client.learningsignal.com/";
+
+const href = window.location.href;
+const leaveUrl = href.includes("localhost") ? "http://localhost:3000" : href.includes("amplifyapp") ? devUrl : realUrl;
+const role = 0;
+
 const Zoom = () => {
-  const apiKey = 'gpyibdvWRaKeXWf_1x3yZA';
-  const apiSecret = 'LmDzEXT9nxRv7SCI2rwXn82phJDuOCzQDRtB';
-  const meetingNumber = '4515514600';
-  const passWord = '951810';
-  const devUrl = "https://master.dg7q46trqte00.amplifyapp.com/";
-  const realUrl = "https://zoom-client.learningsignal.com/";
-  const href = window.location.href;
-  const leaveUrl = href.includes("localhost") ? "http://localhost:3000" : href.includes("amplifyapp") ? devUrl : realUrl;
-  const role = new URLSearchParams(window.location.search).get('prof') === 1 ? 1 : 0;
-  
   const [userName, setUserName] = useState('');
   const [studentId, setStudentId] = useState('');
   const divTL = useRef(null);
+  const query = new URLSearchParams(useLocation().search);
+  const meetingNumber = query.get("meetingNumber");
+  const passWord = query.get("passWord");
 
   const TrafficButton = styled.button`
     width: 55px;
@@ -57,6 +61,7 @@ const Zoom = () => {
       top:5px;
       left:5px;
     }
+    
     &:active:after {
       border:0;
     }
@@ -87,7 +92,7 @@ const Zoom = () => {
           apiKey: apiKey,
           passWord: passWord,
           success: (success) => {
-            divTL.current.style.display = "flex"
+            divTL.current.style.display = "flex";
 
             window.addEventListener('beforeunload', (event) => {
               event.preventDefault();
@@ -106,16 +111,17 @@ const Zoom = () => {
     })
   }
 
-  const sendTraffic = async (state) => {
-    if (!state || !studentId) return;
+  const sendTraffic = async (value) => {
+    if (!value || !studentId) return;
 
     await API.graphql({ 
       query: createTrafficMutation, 
       variables: { 
         input: {
           studentId: studentId, 
-          meetingId: meetingNumber, 
-          state: state,
+          meetingId: meetingNumber,
+          hash: query.get('hash'),
+          state: value,
           dateTime: new Date()
         }
       } 
@@ -148,7 +154,9 @@ const Zoom = () => {
                     borderRadius: "5px",
                     width: "230px",
                     fontSize: "15px"
-                  }}></input>
+                  }}
+              >    
+        </input>
       </div>
       <div>
         <h6

@@ -7,6 +7,7 @@ export const getTraffic = /* GraphQL */ `
       id
       studentId
       meetingId
+      hash
       state
       dateTime
       createdAt
@@ -25,6 +26,7 @@ export const listTraffics = /* GraphQL */ `
         id
         studentId
         meetingId
+        hash
         state
         dateTime
         createdAt
@@ -40,6 +42,7 @@ export const getFile = /* GraphQL */ `
       id
       name
       hash
+      uploadedTime
       createdAt
       updatedAt
     }
@@ -56,6 +59,7 @@ export const listFiles = /* GraphQL */ `
         id
         name
         hash
+        uploadedTime
         createdAt
         updatedAt
       }

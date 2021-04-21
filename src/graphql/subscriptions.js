@@ -7,6 +7,7 @@ export const onCreateTraffic = /* GraphQL */ `
       id
       studentId
       meetingId
+      hash
       state
       dateTime
       createdAt
@@ -20,6 +21,7 @@ export const onUpdateTraffic = /* GraphQL */ `
       id
       studentId
       meetingId
+      hash
       state
       dateTime
       createdAt
@@ -33,6 +35,7 @@ export const onDeleteTraffic = /* GraphQL */ `
       id
       studentId
       meetingId
+      hash
       state
       dateTime
       createdAt
@@ -46,6 +49,7 @@ export const onCreateFile = /* GraphQL */ `
       id
       name
       hash
+      uploadedTime
       createdAt
       updatedAt
     }
@@ -57,6 +61,7 @@ export const onUpdateFile = /* GraphQL */ `
       id
       name
       hash
+      uploadedTime
       createdAt
       updatedAt
     }
@@ -68,6 +73,7 @@ export const onDeleteFile = /* GraphQL */ `
       id
       name
       hash
+      uploadedTime
       createdAt
       updatedAt
     }

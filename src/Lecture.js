@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useRef } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from "styled-components";
 import './Lecture.css';
@@ -9,8 +9,14 @@ import { Chart } from "react-google-charts";
 import { Container, Col, Row } from 'react-bootstrap';
 import { createPage as createPageMutation} from './graphql/mutations';
 import { listPages } from './graphql/queries';
+import { createHmac } from 'crypto';
+
+import AdminContext from './contexts/admin';
+
+const url = window.location.origin;
 
 const Lecture = () => {
+    const context = useContext(AdminContext);
     const { hash } = useParams();
     const [file, setFile] = useState('');
     const [numPages, setNumPages] = useState(null);
@@ -102,7 +108,9 @@ const Lecture = () => {
     `;
 
     return (
-        <>
+        <> 
+            <div>참가링크복사</div>
+            <div>{url}?meetingNumber={context.state.meetingNumber}&passWord={context.state.passWord}&hash={hash}</div>
             <Container>
                 <Row>
                     <Col sm={9} lg={true}>
