@@ -24,6 +24,7 @@ const role = 0;
 const Zoom = () => {
   const [userName, setUserName] = useState('');
   const [studentId, setStudentId] = useState('');
+  const [affiliation, setAffiliation] = useState('');
   const divTL = useRef(null);
   const query = new URLSearchParams(useLocation().search);
   const meetingNumber = query.get("meetingNumber");
@@ -72,8 +73,8 @@ const Zoom = () => {
   function generateSignature() {
     const timestamp = new Date().getTime() - 30000;
     const msg = Buffer.from(apiKey + meetingNumber + timestamp + role).toString('base64');
-    const hash = createHmac('sha256', apiSecret).update(msg).digest('base64');
-    const signature = Buffer.from(`${apiKey}.${meetingNumber}.${timestamp}.${role}.${hash}`).toString('base64');
+    const hmac = createHmac('sha256', apiSecret).update(msg).digest('base64');
+    const signature = Buffer.from(`${apiKey}.${meetingNumber}.${timestamp}.${role}.${hmac}`).toString('base64');
     return signature;
   }
 
@@ -112,13 +113,14 @@ const Zoom = () => {
   }
 
   const sendTraffic = async (value) => {
-    if (!value || !studentId) return;
+    if (!value || !studentId || !affiliation || !meetingNumber || !query.get('hash')) return;
 
     await API.graphql({ 
       query: createTrafficMutation, 
       variables: { 
         input: {
           studentId: studentId, 
+          affiliation: affiliation,
           meetingId: meetingNumber,
           hash: query.get('hash'),
           state: value,
@@ -134,9 +136,39 @@ const Zoom = () => {
 
   return (
     <div className="App">
-      <div style={{
+      <div 
+        style={{
             marginTop:"15%"
-          }}>
+        }}
+      >
+        <h6
+          style={{
+            fontWeight: "bold"
+          }}
+        >
+          학교
+        </h6>
+        <select
+              onChange={e => setAffiliation(e.target.value)}
+              style={{
+                    marginTop: "0px",
+                    paddingLeft: "10px",
+                    paddingRight: "10px",
+                    borderRadius: "5px",
+                    width: "230px",
+                    fontSize: "15px"
+                  }}
+        >
+          <option value="HYU">한양대학교</option>
+          <option value="EJU">을지대학교</option>
+          <option value="KJWU">광주여자대학교</option>
+          <option value="LTU">루터대학교</option>
+          <option value="SMU">상명대학교</option>
+          <option value="BSU">백석대학교</option>
+          <option value="BSCU">백석문화대학교</option>
+        </select>
+      </div>
+      <div>
         <h6
           style={{
             fontWeight: "bold"
@@ -151,7 +183,6 @@ const Zoom = () => {
                     marginBottom: "2px",
                     paddingLeft: "10px",
                     paddingRight: "10px",
-                    borderRadius: "5px",
                     width: "230px",
                     fontSize: "15px"
                   }}
@@ -171,7 +202,6 @@ const Zoom = () => {
                     marginTop: "0px",
                     paddingLeft: "10px",
                     paddingRight: "10px",
-                    borderRadius: "5px",
                     width: "230px",
                     fontSize: "15px"
                   }}>

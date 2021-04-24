@@ -8,7 +8,7 @@ import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { Chart } from "react-google-charts";
 import { Container, Col, Row } from 'react-bootstrap';
 import { createPage as createPageMutation} from './graphql/mutations';
-import { listPages } from './graphql/queries';
+import { listPages, listTraffics } from './graphql/queries';
 import { createHmac } from 'crypto';
 
 import AdminContext from './contexts/admin';
@@ -22,7 +22,8 @@ const Lecture = () => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [scale, setScale] = useState(1.0);
-    const [pageDatas, setPageDatas] = useState(null);
+    const [pages, setPages] = useState(null);
+    const [traffics, setTraffics] = useState(null);
 
     useEffect(() => {
         fetchFile();
@@ -33,7 +34,7 @@ const Lecture = () => {
         setFile(file);
     };
 
-    const fetchPageDatas = async () => {
+    const fetchPages = async () => {
         const apiData = await API.graphql({ 
             query: listPages,
             variables: {
@@ -44,16 +45,30 @@ const Lecture = () => {
                 }
             }
         });
-        setPageDatas(apiData.data.listPages.items.map(
+        
+        setPages(apiData.data.listPages.items.map(
             (value) => {
                 return [value.pageNumber, value.finishedTime];
             })
         );
+    };
 
-        console.log(apiData.data.listPages.items.map(
+    const fetchTraffics = async () => {
+        const apiData = await API.graphql({
+            query: listTraffics,
+            variables: {
+                filter: {
+                    hash: {
+                        eq: hash
+                    }
+                }
+            }
+        });
+        setTraffics(apiData.data.listTraffics.items.map(
             (value) => {
-                return [value.pageNumber, value.finishedTime];
-            }))
+                return [value.studentId, value.state, value.dateTime];
+            })
+        );
     };
 
     const onDocumentLoadSuccess = async ({ numPages }) => {
@@ -69,7 +84,6 @@ const Lecture = () => {
         if (pageNumber >= numPages) return;
         setPageNumber(pageNumber + 1);
 
-        // insert Page
         if (!hash || !numPages || !pageNumber) return;
         await API.graphql({ 
           query: createPageMutation, 
@@ -82,7 +96,8 @@ const Lecture = () => {
             }
           } 
         });
-        fetchPageDatas();
+        fetchPages();
+        fetchTraffics();
     };
 
     const PageButton = styled.button`
@@ -109,6 +124,10 @@ const Lecture = () => {
 
     return (
         <> 
+            <div>Traffics</div>
+            <div>{traffics}</div>
+            <div>Pages</div>
+            <div>{pages}</div>
             <div>참가링크복사</div>
             <div>{url}?meetingNumber={context.state.meetingNumber}&passWord={context.state.passWord}&hash={hash}</div>
             <Container>

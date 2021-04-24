@@ -6,6 +6,7 @@ export const getTraffic = /* GraphQL */ `
     getTraffic(id: $id) {
       id
       studentId
+      affiliation
       meetingId
       hash
       state
@@ -25,6 +26,7 @@ export const listTraffics = /* GraphQL */ `
       items {
         id
         studentId
+        affiliation
         meetingId
         hash
         state

@@ -1,6 +1,7 @@
 type Traffic @model {
   id: ID!
   studentId: String!
+  affiliation: String!
   meetingId: String!
   hash: String!
   state: String!

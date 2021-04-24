@@ -9,6 +9,7 @@ export const createTraffic = /* GraphQL */ `
     createTraffic(input: $input, condition: $condition) {
       id
       studentId
+      affiliation
       meetingId
       hash
       state
@@ -26,6 +27,7 @@ export const updateTraffic = /* GraphQL */ `
     updateTraffic(input: $input, condition: $condition) {
       id
       studentId
+      affiliation
       meetingId
       hash
       state
@@ -43,6 +45,7 @@ export const deleteTraffic = /* GraphQL */ `
     deleteTraffic(input: $input, condition: $condition) {
       id
       studentId
+      affiliation
       meetingId
       hash
       state

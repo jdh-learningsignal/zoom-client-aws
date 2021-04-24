@@ -6,6 +6,7 @@ export const onCreateTraffic = /* GraphQL */ `
     onCreateTraffic {
       id
       studentId
+      affiliation
       meetingId
       hash
       state
@@ -20,6 +21,7 @@ export const onUpdateTraffic = /* GraphQL */ `
     onUpdateTraffic {
       id
       studentId
+      affiliation
       meetingId
       hash
       state
@@ -34,6 +36,7 @@ export const onDeleteTraffic = /* GraphQL */ `
     onDeleteTraffic {
       id
       studentId
+      affiliation
       meetingId
       hash
       state
