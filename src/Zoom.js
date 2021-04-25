@@ -24,7 +24,7 @@ const Zoom = () => {
   const [studentId, setStudentId] = useState('NULL');
   const [affiliation, setAffiliation] = useState('HYU');
   const [pageNumber, setPageNumber] = useState(0);
-  const [feedText, setFeedText] = useState('');
+  const [prevFeedTime, setPrevFeedTime] = useState(new Date());
   const divTL = useRef(null);
   const feedAlertRef = useRef(null);
   const query = new URLSearchParams(useLocation().search);
@@ -114,7 +114,9 @@ const Zoom = () => {
   }
 
   const sendTraffic = async (value) => {
-    if (!value || !studentId || !affiliation || !meetingNumber || !query.get('hash')) return;
+    const currentTime = new Date();
+    if (currentTime.getTime() - prevFeedTime.getTime() < 10000) return ;
+    if (!value || !studentId || !affiliation || !meetingNumber || !query.get('hash')) return ;
 
     const apiData = await API.graphql({ 
       query: listPages,
@@ -126,6 +128,8 @@ const Zoom = () => {
         }
       }
     });
+
+    setPrevFeedTime(currentTime);
 
     const pages = apiData.data.listPages.items.map((value) => value.pageNumber);
     let maxPageNumber = Math.max(...pages);
@@ -281,9 +285,6 @@ const Zoom = () => {
           </TrafficButton>
         </div>
       </div>
-      <Alert ref={feedAlertRef} variant="secondary">
-        {feedText}
-      </Alert>
     </div>
   );
 };
