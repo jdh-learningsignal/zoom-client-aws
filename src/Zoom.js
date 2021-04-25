@@ -130,7 +130,7 @@ const Zoom = () => {
     const pages = apiData.data.listPages.items.map((value) => value.pageNumber);
     let maxPageNumber = Math.max(...pages);
 
-    if (!maxPageNumber) {
+    if (!isFinite(maxPageNumber)) {
       maxPageNumber = 1;
     } else {
       maxPageNumber = maxPageNumber + 1;
@@ -281,7 +281,7 @@ const Zoom = () => {
           </TrafficButton>
         </div>
       </div>
-      <Alert ref={feedAlertRef} variant="secondary" none>
+      <Alert ref={feedAlertRef} variant="secondary">
         {feedText}
       </Alert>
     </div>
