@@ -238,7 +238,7 @@ const Lecture = () => {
                         <Chart
                             style={{
                                 position: "fixed",
-                                right:"21%",
+                                right:"22%",
                                 top:"2%"
                             }}
                             width={browserWidth * 0.18}
