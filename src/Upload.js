@@ -42,7 +42,7 @@ const Upload = () => {
     };
 
     return (
-        <>
+        <div className="App">
             <div style={{
                 marginTop:"15%"
             }}>
@@ -54,8 +54,8 @@ const Upload = () => {
                     회의 ID
                 </h6>
                 <input 
-                    onChange={e => context.actions.setMeetingNumber(e.target.value)}
-                    placeholder="예) 4515514600"
+                    onChange={e => context.actions.setMeetingNumber(e.target.value.replace(/ /gi, ''))}
+                    placeholder="예) 451 551 4600"
                     type="text"
                     maxLength="20"
                     style={{
@@ -63,7 +63,6 @@ const Upload = () => {
                         marginBottom: "2px",
                         paddingLeft: "10px",
                         paddingRight: "10px",
-                        borderRadius: "5px",
                         width: "230px",
                         fontSize: "15px"
                     }}
@@ -86,29 +85,39 @@ const Upload = () => {
                             marginTop: "0px",
                             paddingLeft: "10px",
                             paddingRight: "10px",
-                            borderRadius: "5px",
                             width: "230px",
                             fontSize: "15px"
                         }}
                 >
                 </input>
             </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <form method="post" action="#" id="#">
-                            <div class="form-group files">
-                                <label for="formFileLg" class="form-label">강의 자료 업로드</label>
-                                <input onChange={onChangeFile} type="file" class="form-control" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div>
+                <h6
+                    style={{
+                        fontWeight: "bold"
+                    }}
+                >
+                    강의자료 업로드 (PDF만 가능)
+                </h6>
+                <input 
+                    onChange={onChangeFile} 
+                    type="file"
+                    style={{
+                        marginTop: "0px",
+                        paddingLeft: "10px",
+                        paddingRight: "10px",
+                        width: "230px",
+                        fontSize: "15px",
+                        display: "inline"
+                    }}
+                >
+                </input>
             </div>
+
             <Link ref={startButtonRef} to={`/lecture/${material.hash}`} 
                 style={{
                     display:"none",
-                    marginTop: "20px",
+                    marginTop: "50px",
                     backgroundColor: "#2D8CFF",
                     color: "#ffffff",
                     textDecoration: "none",
@@ -123,13 +132,14 @@ const Upload = () => {
                     textAlign: "center",
                     width: "10%",
                     margin: "auto",
-                    left:"25%",
-                    position:"fixed"
+                    left:"45%",
+                    position:"fixed",
+                    textAlign: "center"
                 }}
             >
                 강의 시작
             </Link>
-        </>
+        </div>
     );
 };
 

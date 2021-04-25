@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Alert } from 'react-bootstrap';
 import styled from "styled-components";
 import { API } from 'aws-amplify';
 import { createTraffic as createTrafficMutation } from './graphql/mutations';
@@ -23,7 +24,9 @@ const Zoom = () => {
   const [studentId, setStudentId] = useState('NULL');
   const [affiliation, setAffiliation] = useState('HYU');
   const [pageNumber, setPageNumber] = useState(0);
+  const [feedText, setFeedText] = useState('');
   const divTL = useRef(null);
+  const feedAlertRef = useRef(null);
   const query = new URLSearchParams(useLocation().search);
   const meetingNumber = query.get("meetingNumber");
   const passWord = query.get("passWord");
@@ -198,7 +201,10 @@ const Zoom = () => {
         <h6
           style={{
             fontWeight: "bold"
-          }}>이름</h6>
+          }}
+        >
+          이름
+        </h6>
         <input 
               onChange={e => setUserName(e.target.value)}
               placeholder="예) 홍길동"
@@ -275,6 +281,9 @@ const Zoom = () => {
           </TrafficButton>
         </div>
       </div>
+      <Alert ref={feedAlertRef} variant="secondary" none>
+        {feedText}
+      </Alert>
     </div>
   );
 };

@@ -1,4 +1,6 @@
-import { React, useState, useEffect, useContext } from 'react';
+import { React, useState, useEffect, useContext, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import jwt from 'jsonwebtoken';
 import { useParams } from 'react-router-dom';
 import styled from "styled-components";
@@ -37,9 +39,12 @@ const Lecture = () => {
     const [prevReds, setPrevReds] = useState(0);
     const [prevGreens, setPrevGreens] = useState(0);
     const [userNumber, setUserNumber] = useState(0);
+    const [browserWidth, setBrowserWidth] = useState(window.innerWidth);
+    const copyLinkRef = useRef(null);
 
     useEffect(() => {
         fetchFile();
+        setBrowserWidth(window.innerWidth);
     }, []);
 
     const fetchFile = async () => {
@@ -60,6 +65,9 @@ const Lecture = () => {
         });
 
         const items = apiData.data.listTraffics.items;
+
+        if (items.length === 0) return;
+        
         const maxPageNumber = Math.max(...items.map((value) => value.pageNumber));
 
         const traffics = [];
@@ -72,7 +80,7 @@ const Lecture = () => {
                 traffics[value.pageNumber - 1][2] = traffics[value.pageNumber - 1][2] + 1; 
             } 
         });
-
+        
         setTraffics([...traffics]);
         setTotalGreens([...traffics].map(value => value[1]).reduce((accumulator, value) => accumulator + value));
         setTotalReds([...traffics].map(value => value[2]).reduce((accumulator, value) => accumulator + value));
@@ -110,6 +118,13 @@ const Lecture = () => {
         });
 
         fetchTraffics();
+    };
+
+    const onCopyLink = e => {
+        copyLinkRef.current.select();
+        copyLinkRef.current.setSelectionRange(0, 99999);
+
+        document.execCommand("copy");
     };
 
     // const fetchUserNumber = () => {
@@ -154,12 +169,10 @@ const Lecture = () => {
     `;
 
     return (
-        <> 
-            <div>참가링크복사</div>
-            <div>{url}?meetingNumber={context.state.meetingNumber}&passWord={context.state.passWord}&hash={hash}</div>
-            <Container>
+        <div className="App">
+            <Container fluid>
                 <Row>
-                    <Col sm={9} lg={true}>
+                    <Col sm={8} lg={true}>
                         <Document
                             file={file}
                             onLoadSuccess={onDocumentLoadSuccess}
@@ -167,19 +180,17 @@ const Lecture = () => {
                         >
                             <Page 
                                 pageNumber={pageNumber}
-                                // scale={100}
-                                width={800}
+                                width={browserWidth * 0.65}
                             />
                         </Document>
                         <div>{pageNumber} / {numPages}</div>
-                        <PageButton onClick={onPrevPage}>&lt;</PageButton>
-                        <PageButton onClick={onNextPage}>&gt;</PageButton>
+                        <Button onClick={onPrevPage}>이전</Button>{' '}
+                        <Button onClick={onNextPage}>다음</Button><br/><br/>
                     </Col>
                     <Col sm={3}>
-                        <div>현재 접속자 수: {userNumber}</div>
+                        {/* <div>현재 접속자 수: {userNumber}</div> */}
                         <Chart
-                            width={'100%'}
-                            height={'33%'}
+                            width={browserWidth * 0.25}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
@@ -192,8 +203,7 @@ const Lecture = () => {
                             }}
                         />
                         <Chart
-                            width={'100%'}
-                            height={'33%'}
+                            width={browserWidth * 0.25}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
@@ -206,8 +216,7 @@ const Lecture = () => {
                             }}
                         />
                         <Chart
-                            width={'100%'}
-                            height={'34%'}
+                            width={browserWidth * 0.25}
                             chartType="LineChart"
                             loader={<div>Loading...</div>}
                             data={[['x', '알겠어요', '어려워요'], ...traffics]}
@@ -220,10 +229,56 @@ const Lecture = () => {
                                 }
                             }}
                         />
+                        <Button 
+                            onClick={onCopyLink}
+                            variant="primary"
+                            style={{
+                                right:"21%",
+                                bottom:"95px",
+                                position:"fixed"
+                            }}
+                        >
+                            강의실 링크 복사
+                        </Button>{' '}
+                        <input 
+                            ref={copyLinkRef}
+                            value={`${url}?meetingNumber=${context.state.meetingNumber}&passWord=${context.state.passWord}&hash=${hash}`}
+                            style={{
+                                display: "hidden",
+                                bottom:"100px",
+                                position:"fixed"
+                            }}
+                        >
+                        </input>
+                        <Link to={`/admin`} 
+                            style={{
+                                marginTop: "50px",
+                                backgroundColor: "grey",
+                                color: "#ffffff",
+                                textDecoration: "none",
+                                paddingTop: "10px",
+                                paddingBottom: "10px",
+                                paddingLeft: "40px",
+                                paddingRight: "40px",
+                                borderRadius: "10px",
+                                cursor: "pointer",
+                                border: "none",
+                                outline: "none",
+                                textAlign: "center",
+                                width: "10%",
+                                margin: "auto",
+                                right:"10%",
+                                bottom:"50px",
+                                position:"fixed",
+                                textAlign: "center"
+                            }}
+                        >
+                            강의 종료
+                        </Link>
                     </Col>
                 </Row>
             </Container>
-        </>
+        </div>
     );
 };
 
