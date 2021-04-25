@@ -1,4 +1,5 @@
 import { React, useState, useEffect, useContext } from 'react';
+import jwt from 'jsonwebtoken';
 import { useParams } from 'react-router-dom';
 import styled from "styled-components";
 import './Lecture.css';
@@ -8,12 +9,21 @@ import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { Chart } from "react-google-charts";
 import { Container, Col, Row } from 'react-bootstrap';
 import { createPage as createPageMutation} from './graphql/mutations';
-import { listPages, listTraffics } from './graphql/queries';
+import { listTraffics } from './graphql/queries';
 import { createHmac } from 'crypto';
+import config from './config';
+import axios from 'axios';
 
 import AdminContext from './contexts/admin';
 
 const url = window.location.origin;
+
+const payload = {
+    iss: config.apiKey,
+    exp: ((new Date()).getTime() + 5000)
+};
+
+const token = jwt.sign(payload, config.apiSecret);
 
 const Lecture = () => {
     const context = useContext(AdminContext);
@@ -21,9 +31,12 @@ const Lecture = () => {
     const [file, setFile] = useState('');
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
-    const [scale, setScale] = useState(1.0);
-    const [pages, setPages] = useState(null);
-    const [traffics, setTraffics] = useState(null);
+    const [traffics, setTraffics] = useState([[1, 0, 0]]);
+    const [totalReds, setTotalReds] = useState(0);
+    const [totalGreens, setTotalGreens] = useState(0);
+    const [prevReds, setPrevReds] = useState(0);
+    const [prevGreens, setPrevGreens] = useState(0);
+    const [userNumber, setUserNumber] = useState(0);
 
     useEffect(() => {
         fetchFile();
@@ -32,25 +45,6 @@ const Lecture = () => {
     const fetchFile = async () => {
         const file = await Storage.get(hash);
         setFile(file);
-    };
-
-    const fetchPages = async () => {
-        const apiData = await API.graphql({ 
-            query: listPages,
-            variables: {
-                filter: {
-                    hash: {
-                        eq: hash
-                    }
-                }
-            }
-        });
-        
-        setPages(apiData.data.listPages.items.map(
-            (value) => {
-                return [value.pageNumber, value.finishedTime];
-            })
-        );
     };
 
     const fetchTraffics = async () => {
@@ -64,11 +58,26 @@ const Lecture = () => {
                 }
             }
         });
-        setTraffics(apiData.data.listTraffics.items.map(
-            (value) => {
-                return [value.studentId, value.state, value.dateTime];
-            })
-        );
+
+        const items = apiData.data.listTraffics.items;
+        const maxPageNumber = Math.max(...items.map((value) => value.pageNumber));
+
+        const traffics = [];
+        for (let i = 1; i <= maxPageNumber; i++) traffics.push([i, 0, 0]);
+        
+        items.forEach((value) => {
+            if (value.state === 'GREEN') {
+                traffics[value.pageNumber - 1][1] = traffics[value.pageNumber - 1][1] + 1;
+            } else {
+                traffics[value.pageNumber - 1][2] = traffics[value.pageNumber - 1][2] + 1; 
+            } 
+        });
+
+        setTraffics([...traffics]);
+        setTotalGreens([...traffics].map(value => value[1]).reduce((accumulator, value) => accumulator + value));
+        setTotalReds([...traffics].map(value => value[2]).reduce((accumulator, value) => accumulator + value));
+        setPrevGreens([...traffics].map(value => value[1])[pageNumber - 1]);
+        setPrevReds([...traffics].map(value => value[2])[pageNumber - 1]);
     };
 
     const onDocumentLoadSuccess = async ({ numPages }) => {
@@ -77,7 +86,10 @@ const Lecture = () => {
 
     const onPrevPage = async () => {
         if (pageNumber <= 1) return;
+        
         setPageNumber(pageNumber - 1);
+        setPrevGreens([...traffics].map(value => value[1])[pageNumber - 3]);
+        setPrevReds([...traffics].map(value => value[2])[pageNumber - 3]);
     };
 
     const onNextPage = async () => {
@@ -94,11 +106,30 @@ const Lecture = () => {
                 pageNumber: pageNumber,
                 finishedTime: new Date()
             }
-          } 
+          }
         });
-        fetchPages();
+
         fetchTraffics();
     };
+
+    // const fetchUserNumber = () => {
+    //     const option = {
+    //         url: 'https://api.zoom.us/v2/',
+    //         qs: {
+    //             status: 'active'
+    //         },
+    //         auth: {
+    //             'bearer': token
+    //         },
+    //         headers: {
+    //             'User-Agent': 'Zoom-Jwt-Request',
+    //             'content-type': 'application/json'
+    //         },
+    //         json: true
+    //     };
+          
+    //     axios(option).then(response => console.log(response))
+    // };
 
     const PageButton = styled.button`
         position:relative;
@@ -124,10 +155,6 @@ const Lecture = () => {
 
     return (
         <> 
-            <div>Traffics</div>
-            <div>{traffics}</div>
-            <div>Pages</div>
-            <div>{pages}</div>
             <div>참가링크복사</div>
             <div>{url}?meetingNumber={context.state.meetingNumber}&passWord={context.state.passWord}&hash={hash}</div>
             <Container>
@@ -149,6 +176,7 @@ const Lecture = () => {
                         <PageButton onClick={onNextPage}>&gt;</PageButton>
                     </Col>
                     <Col sm={3}>
+                        <div>현재 접속자 수: {userNumber}</div>
                         <Chart
                             width={'100%'}
                             height={'33%'}
@@ -156,8 +184,8 @@ const Lecture = () => {
                             loader={<div>Loading...</div>}
                             data={[
                                 ['응답', '횟수'],
-                                ['알겠어요', 45],
-                                ['어려워요', 34]
+                                ['알겠어요', totalGreens],
+                                ['어려워요', totalReds]
                             ]}
                             options={{
                                 title: '총 응답',
@@ -170,8 +198,8 @@ const Lecture = () => {
                             loader={<div>Loading...</div>}
                             data={[
                                 ['응답', '횟수'],
-                                ['알겠어요', 11],
-                                ['어려워요', 2]
+                                ['알겠어요', prevGreens],
+                                ['어려워요', prevReds]
                             ]}
                             options={{
                                 title: '이전 슬라이드 응답',
@@ -182,17 +210,7 @@ const Lecture = () => {
                             height={'34%'}
                             chartType="LineChart"
                             loader={<div>Loading...</div>}
-                            data={[
-                                ['x', '알겠어요', '어려워요'],
-                                [0, 0, 0],
-                                [1, 10, 5],
-                                [2, 23, 15],
-                                [3, 17, 9],
-                                [4, 18, 10],
-                                [5, 9, 5],
-                                [6, 11, 3],
-                                [7, 27, 19]
-                            ]}
+                            data={[['x', '알겠어요', '어려워요'], ...traffics]}
                             options={{
                                 hAxis: {
                                     title: '페이지'

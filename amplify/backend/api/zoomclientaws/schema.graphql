@@ -4,6 +4,7 @@ type Traffic @model {
   affiliation: String!
   meetingId: String!
   hash: String!
+  pageNumber: Int!
   state: String!
   dateTime: AWSDateTime!
 }

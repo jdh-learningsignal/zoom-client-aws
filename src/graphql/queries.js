@@ -9,6 +9,7 @@ export const getTraffic = /* GraphQL */ `
       affiliation
       meetingId
       hash
+      pageNumber
       state
       dateTime
       createdAt
@@ -29,6 +30,7 @@ export const listTraffics = /* GraphQL */ `
         affiliation
         meetingId
         hash
+        pageNumber
         state
         dateTime
         createdAt

@@ -9,6 +9,7 @@ export const onCreateTraffic = /* GraphQL */ `
       affiliation
       meetingId
       hash
+      pageNumber
       state
       dateTime
       createdAt
@@ -24,6 +25,7 @@ export const onUpdateTraffic = /* GraphQL */ `
       affiliation
       meetingId
       hash
+      pageNumber
       state
       dateTime
       createdAt
@@ -39,6 +41,7 @@ export const onDeleteTraffic = /* GraphQL */ `
       affiliation
       meetingId
       hash
+      pageNumber
       state
       dateTime
       createdAt

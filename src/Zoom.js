@@ -5,6 +5,8 @@ import { createTraffic as createTrafficMutation } from './graphql/mutations';
 import { ZoomMtg } from '@zoomus/websdk';
 import { createHmac } from 'crypto';
 import { useLocation } from 'react-router-dom';
+import { listPages } from './graphql/queries';
+import config from './config';
 
 import './Zoom.css';
 
@@ -12,19 +14,15 @@ ZoomMtg.setZoomJSLib('https://source.zoom.us/1.9.1/lib', '/av');
 ZoomMtg.preLoadWasm();
 ZoomMtg.prepareJssdk();
 
-const apiKey = 'gpyibdvWRaKeXWf_1x3yZA';
-const apiSecret = 'LmDzEXT9nxRv7SCI2rwXn82phJDuOCzQDRtB';
-const devUrl = "https://master.dg7q46trqte00.amplifyapp.com/";
-const realUrl = "https://zoom-client.learningsignal.com/";
-
 const href = window.location.href;
-const leaveUrl = href.includes("localhost") ? "http://localhost:3000" : href.includes("amplifyapp") ? devUrl : realUrl;
+const leaveUrl = href.includes("localhost") ? config.localUrl : href.includes("amplifyapp") ? config.devUrl : config.realUrl;
 const role = 0;
 
 const Zoom = () => {
-  const [userName, setUserName] = useState('');
-  const [studentId, setStudentId] = useState('');
-  const [affiliation, setAffiliation] = useState('');
+  const [userName, setUserName] = useState('NULL');
+  const [studentId, setStudentId] = useState('NULL');
+  const [affiliation, setAffiliation] = useState('HYU');
+  const [pageNumber, setPageNumber] = useState(0);
   const divTL = useRef(null);
   const query = new URLSearchParams(useLocation().search);
   const meetingNumber = query.get("meetingNumber");
@@ -72,9 +70,9 @@ const Zoom = () => {
 
   function generateSignature() {
     const timestamp = new Date().getTime() - 30000;
-    const msg = Buffer.from(apiKey + meetingNumber + timestamp + role).toString('base64');
-    const hmac = createHmac('sha256', apiSecret).update(msg).digest('base64');
-    const signature = Buffer.from(`${apiKey}.${meetingNumber}.${timestamp}.${role}.${hmac}`).toString('base64');
+    const msg = Buffer.from(config.apiKey + meetingNumber + timestamp + role).toString('base64');
+    const hmac = createHmac('sha256', config.apiSecret).update(msg).digest('base64');
+    const signature = Buffer.from(`${config.apiKey}.${meetingNumber}.${timestamp}.${role}.${hmac}`).toString('base64');
     return signature;
   }
 
@@ -90,7 +88,7 @@ const Zoom = () => {
           signature: signature,
           meetingNumber: meetingNumber,
           userName: userName,
-          apiKey: apiKey,
+          apiKey: config.apiKey,
           passWord: passWord,
           success: (success) => {
             divTL.current.style.display = "flex";
@@ -115,19 +113,46 @@ const Zoom = () => {
   const sendTraffic = async (value) => {
     if (!value || !studentId || !affiliation || !meetingNumber || !query.get('hash')) return;
 
-    await API.graphql({ 
-      query: createTrafficMutation, 
-      variables: { 
-        input: {
-          studentId: studentId, 
-          affiliation: affiliation,
-          meetingId: meetingNumber,
-          hash: query.get('hash'),
-          state: value,
-          dateTime: new Date()
+    const apiData = await API.graphql({ 
+      query: listPages,
+      variables: {
+        filter: {
+          hash: {
+            eq: query.get('hash')
+          }
         }
-      } 
+      }
     });
+
+    const pages = apiData.data.listPages.items.map((value) => value.pageNumber);
+    let maxPageNumber = Math.max(...pages);
+
+    if (!maxPageNumber) {
+      maxPageNumber = 1;
+    } else {
+      maxPageNumber = maxPageNumber + 1;
+    }
+
+    if (maxPageNumber > pageNumber) {
+      await API.graphql({ 
+        query: createTrafficMutation, 
+        variables: { 
+          input: {
+            studentId: studentId, 
+            affiliation: affiliation,
+            meetingId: meetingNumber,
+            hash: query.get('hash'),
+            pageNumber: maxPageNumber,
+            state: value,
+            dateTime: new Date()
+          }
+        } 
+      });
+
+      setPageNumber(maxPageNumber);
+    } else {
+      return ;
+    }    
   }
 
   const onClickButton = e => {
@@ -156,16 +181,17 @@ const Zoom = () => {
                     paddingRight: "10px",
                     borderRadius: "5px",
                     width: "230px",
+                    height: "25px",
                     fontSize: "15px"
                   }}
         >
           <option value="HYU">한양대학교</option>
-          <option value="EJU">을지대학교</option>
           <option value="KJWU">광주여자대학교</option>
           <option value="LTU">루터대학교</option>
-          <option value="SMU">상명대학교</option>
           <option value="BSU">백석대학교</option>
           <option value="BSCU">백석문화대학교</option>
+          <option value="SMU">상명대학교</option>
+          <option value="EJU">을지대학교</option>
         </select>
       </div>
       <div>
@@ -175,7 +201,7 @@ const Zoom = () => {
           }}>이름</h6>
         <input 
               onChange={e => setUserName(e.target.value)}
-              placeholder="예) 정동훈"
+              placeholder="예) 홍길동"
               type="text"
               maxLength="20"
               style={{
@@ -196,7 +222,7 @@ const Zoom = () => {
           }}>학번</h6>
         <input 
               onChange={e => setStudentId(e.target.value)}
-              placeholder="예) 2021278706"
+              placeholder="예) 2021123123"
               type="text"
               style={{
                     marginTop: "0px",
