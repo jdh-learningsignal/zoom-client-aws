@@ -172,7 +172,7 @@ const Lecture = () => {
         <div className="App">
             <Container fluid>
                 <Row>
-                    <Col sm={8} lg={true}>
+                    <Col sm={8}>
                         <Document
                             file={file}
                             onLoadSuccess={onDocumentLoadSuccess}
@@ -180,17 +180,50 @@ const Lecture = () => {
                         >
                             <Page 
                                 pageNumber={pageNumber}
-                                width={browserWidth * 0.65}
+                                width={browserWidth * 0.55}
                             />
                         </Document>
-                        <div>{pageNumber} / {numPages}</div>
-                        <Button onClick={onPrevPage}>이전</Button>{' '}
-                        <Button onClick={onNextPage}>다음</Button><br/><br/>
+                        <div 
+                            style={{
+                                left:"28%",
+                                bottom:"15%",
+                                position:"fixed",
+                                fontWeight: "normal"
+                            }}
+                        >
+                            {pageNumber} / {numPages}
+                        </div>
+                        <Button 
+                            onClick={onPrevPage}
+                            style={{
+                                position: "fixed",
+                                left:"25%",
+                                bottom:"9%"
+                            }}
+                        >
+                            이전
+                        </Button>
+                        {' '}
+                        <Button 
+                            onClick={onNextPage}
+                            style={{
+                                position: "fixed",
+                                left:"30%",
+                                bottom:"9%"
+                            }}
+                        >
+                            다음
+                        </Button>
                     </Col>
                     <Col sm={3}>
                         {/* <div>현재 접속자 수: {userNumber}</div> */}
                         <Chart
-                            width={browserWidth * 0.25}
+                            style={{
+                                position: "fixed",
+                                right:"5%",
+                                top:"2%"
+                            }}
+                            width={browserWidth * 0.18}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
@@ -203,7 +236,12 @@ const Lecture = () => {
                             }}
                         />
                         <Chart
-                            width={browserWidth * 0.25}
+                            style={{
+                                position: "fixed",
+                                right:"21%",
+                                top:"2%"
+                            }}
+                            width={browserWidth * 0.18}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
@@ -216,7 +254,12 @@ const Lecture = () => {
                             }}
                         />
                         <Chart
-                            width={browserWidth * 0.25}
+                            style={{
+                                position: "fixed",
+                                right:"5%",
+                                top:"30%"
+                            }}
+                            width={browserWidth * 0.35}
                             chartType="LineChart"
                             loader={<div>Loading...</div>}
                             data={[['x', '알겠어요', '어려워요'], ...traffics]}
@@ -234,7 +277,7 @@ const Lecture = () => {
                             variant="primary"
                             style={{
                                 right:"21%",
-                                bottom:"95px",
+                                bottom:"12%",
                                 position:"fixed"
                             }}
                         >
@@ -245,7 +288,7 @@ const Lecture = () => {
                             value={`${url}?meetingNumber=${context.state.meetingNumber}&passWord=${context.state.passWord}&hash=${hash}`}
                             style={{
                                 display: "hidden",
-                                bottom:"100px",
+                                bottom:"12.3%",
                                 position:"fixed"
                             }}
                         >
@@ -258,17 +301,17 @@ const Lecture = () => {
                                 textDecoration: "none",
                                 paddingTop: "10px",
                                 paddingBottom: "10px",
-                                paddingLeft: "40px",
-                                paddingRight: "40px",
+                                paddingLeft: "10px",
+                                paddingRight: "10px",
                                 borderRadius: "10px",
                                 cursor: "pointer",
                                 border: "none",
                                 outline: "none",
                                 textAlign: "center",
-                                width: "10%",
+                                width: "8%",
                                 margin: "auto",
                                 right:"10%",
-                                bottom:"50px",
+                                bottom:"5%",
                                 position:"fixed",
                                 textAlign: "center"
                             }}

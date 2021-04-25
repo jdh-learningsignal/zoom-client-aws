@@ -117,7 +117,6 @@ const Upload = () => {
             <Link ref={startButtonRef} to={`/lecture/${material.hash}`} 
                 style={{
                     display:"none",
-                    marginTop: "50px",
                     backgroundColor: "#2D8CFF",
                     color: "#ffffff",
                     textDecoration: "none",
@@ -130,9 +129,10 @@ const Upload = () => {
                     border: "none",
                     outline: "none",
                     textAlign: "center",
-                    width: "10%",
+                    width: "11%",
                     margin: "auto",
-                    left:"45%",
+                    left:"44.5%",
+                    bottom:"35%",
                     position:"fixed",
                     textAlign: "center"
                 }}
