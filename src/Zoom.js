@@ -94,7 +94,6 @@ const Zoom = () => {
   }
 
   const onOut = (event) => {
-    event.preventDefault();
     event.stopPropagation();
     event.returnValue = '';
     
@@ -174,8 +173,15 @@ const Zoom = () => {
               context.actions.setIsIn(true);
             };
             
-            window.removeEventListener('beforeunload', onOut);
-            window.addEventListener('beforeunload', onOut);
+            // window.onbeforeunload = window.onunload;
+
+            // window.removeEventListener('onunload', onOut);
+            // window.addEventListener('onunload', onOut);
+
+            // window.removeEventListener('beforeunload', onOut);
+            // window.addEventListener('beforeunload', onOut);
+
+            window.onbeforeunload = window.onunload = onOut;
           },
           error: (error) => {
             console.log(error)
