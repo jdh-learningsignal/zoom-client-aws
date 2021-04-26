@@ -124,3 +124,51 @@ export const onDeletePage = /* GraphQL */ `
     }
   }
 `;
+export const onCreateAttendance = /* GraphQL */ `
+  subscription OnCreateAttendance {
+    onCreateAttendance {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      dateTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateAttendance = /* GraphQL */ `
+  subscription OnUpdateAttendance {
+    onUpdateAttendance {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      dateTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteAttendance = /* GraphQL */ `
+  subscription OnDeleteAttendance {
+    onDeleteAttendance {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      dateTime
+      createdAt
+      updatedAt
+    }
+  }
+`;

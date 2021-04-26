@@ -151,3 +151,60 @@ export const deletePage = /* GraphQL */ `
     }
   }
 `;
+export const createAttendance = /* GraphQL */ `
+  mutation CreateAttendance(
+    $input: CreateAttendanceInput!
+    $condition: ModelAttendanceConditionInput
+  ) {
+    createAttendance(input: $input, condition: $condition) {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      dateTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateAttendance = /* GraphQL */ `
+  mutation UpdateAttendance(
+    $input: UpdateAttendanceInput!
+    $condition: ModelAttendanceConditionInput
+  ) {
+    updateAttendance(input: $input, condition: $condition) {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      dateTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteAttendance = /* GraphQL */ `
+  mutation DeleteAttendance(
+    $input: DeleteAttendanceInput!
+    $condition: ModelAttendanceConditionInput
+  ) {
+    deleteAttendance(input: $input, condition: $condition) {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      dateTime
+      createdAt
+      updatedAt
+    }
+  }
+`;

@@ -23,3 +23,14 @@ type Page @model {
   pageNumber: Int!
   finishedTime: AWSDateTime!
 }
+
+type Attendance @model {
+  id: ID!
+  hash: String!
+  meetingId: String!
+  userName: String!
+  studentId: String!
+  affiliation: String!
+  state: String!
+  dateTime: AWSDateTime!
+}

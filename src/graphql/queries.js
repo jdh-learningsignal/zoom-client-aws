@@ -104,3 +104,42 @@ export const listPages = /* GraphQL */ `
     }
   }
 `;
+export const getAttendance = /* GraphQL */ `
+  query GetAttendance($id: ID!) {
+    getAttendance(id: $id) {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      dateTime
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listAttendances = /* GraphQL */ `
+  query ListAttendances(
+    $filter: ModelAttendanceFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAttendances(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        hash
+        meetingId
+        userName
+        studentId
+        affiliation
+        state
+        dateTime
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

@@ -1,14 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Alert } from 'react-bootstrap';
 import styled from "styled-components";
 import { API } from 'aws-amplify';
-import { createTraffic as createTrafficMutation } from './graphql/mutations';
+import { 
+  createTraffic as createTrafficMutation, 
+  createAttendance as createAttendanceMutation 
+} from './graphql/mutations';
+import { listAttendances } from './graphql/queries';
 import { ZoomMtg } from '@zoomus/websdk';
 import { createHmac } from 'crypto';
 import { useLocation } from 'react-router-dom';
 import { listPages } from './graphql/queries';
 import config from './config';
 import crypto from 'crypto';
+import AttendanceContext from './contexts/attendance';
 
 import './Zoom.css';
 
@@ -27,11 +32,12 @@ const Zoom = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const [prevFeedTime, setPrevFeedTime] = useState(new Date());
   const divTL = useRef(null);
+  const context = useContext(AttendanceContext);
   const query = new URLSearchParams(useLocation().search);
-  const meetingNumber = query.get("meetingNumber");
-  const hash = query.get('hash');
+  const meetingNumber = query.get("m");
+  const hash = query.get('h');
 
-  let passWord = query.get("passWord");
+  let passWord = query.get("p");
   if (passWord) {
     const decipher = crypto.createDecipher('aes-256-cbc', 'key');
     let result2 = decipher.update(passWord, 'base64', 'utf8');
@@ -87,7 +93,33 @@ const Zoom = () => {
     return signature;
   }
 
-  function startMeeting() {
+  const onOut = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.returnValue = '';
+    
+    API.graphql({ 
+      query: createAttendanceMutation, 
+      variables: { 
+        input: {
+          hash: hash,
+          meetingId: meetingNumber,
+          userName: userName,
+          studentId: studentId,
+          affiliation: affiliation,
+          state: 'OUT',
+          dateTime: new Date()
+        }
+      } 
+    });
+    context.actions.setIsIn(false);
+    ZoomMtg.endMeeting({});
+  };
+
+  function startMeeting(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
     document.getElementById('zmmtg-root').style.display = 'block';
     const signature = generateSignature();
 
@@ -101,14 +133,49 @@ const Zoom = () => {
           userName: userName,
           apiKey: config.apiKey,
           passWord: passWord,
-          success: (success) => {
+          success: async (success) => {
             divTL.current.style.display = "flex";
 
-            window.addEventListener('beforeunload', (event) => {
-              event.preventDefault();
-              event.returnValue = '';
-              ZoomMtg.endMeeting({});
+            const apiData = await API.graphql({
+              query: listAttendances,
+              variables: {
+                filter: {
+                  hash: {
+                    eq: hash
+                  },
+                  studentId: {
+                    eq: studentId
+                  },
+                  affiliation: {
+                    eq: affiliation
+                  }
+                }
+              }
             });
+            
+            const items = apiData.data.listAttendances.items;
+
+            if (!context.state.isIn && items.length % 2 === 0) {
+              API.graphql({ 
+                query: createAttendanceMutation, 
+                variables: {
+                  input: {
+                    hash: hash,
+                    meetingId: meetingNumber,
+                    userName: userName,
+                    studentId: studentId,
+                    affiliation: affiliation,
+                    state: 'IN',
+                    dateTime: new Date()
+                  }
+                } 
+              });
+
+              context.actions.setIsIn(true);
+            };
+            
+            window.removeEventListener('beforeunload', onOut);
+            window.addEventListener('beforeunload', onOut);
           },
           error: (error) => {
             console.log(error)

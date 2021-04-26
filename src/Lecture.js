@@ -285,7 +285,7 @@ const Lecture = () => {
                         </Button>{' '}
                         <input 
                             ref={copyLinkRef}
-                            value={`${url}?meetingNumber=${context.state.meetingNumber}&passWord=${context.state.passWord}&hash=${hash}`}
+                            value={`${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`}
                             style={{
                                 display: "hidden",
                                 bottom:"12.3%",
