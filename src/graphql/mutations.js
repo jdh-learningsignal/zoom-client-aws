@@ -164,6 +164,7 @@ export const createAttendance = /* GraphQL */ `
       studentId
       affiliation
       state
+      device
       dateTime
       createdAt
       updatedAt
@@ -183,6 +184,7 @@ export const updateAttendance = /* GraphQL */ `
       studentId
       affiliation
       state
+      device
       dateTime
       createdAt
       updatedAt
@@ -202,6 +204,7 @@ export const deleteAttendance = /* GraphQL */ `
       studentId
       affiliation
       state
+      device
       dateTime
       createdAt
       updatedAt

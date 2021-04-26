@@ -114,6 +114,7 @@ export const getAttendance = /* GraphQL */ `
       studentId
       affiliation
       state
+      device
       dateTime
       createdAt
       updatedAt
@@ -135,6 +136,7 @@ export const listAttendances = /* GraphQL */ `
         studentId
         affiliation
         state
+        device
         dateTime
         createdAt
         updatedAt

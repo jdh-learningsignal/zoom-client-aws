@@ -95,7 +95,7 @@ const Zoom = () => {
   }
 
   const onOut = (event) => {
-    event.stopPropagation();
+    event.preventDefault();
     event.returnValue = '';
     
     API.graphql({ 
