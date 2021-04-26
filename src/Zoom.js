@@ -39,7 +39,6 @@ const Zoom = () => {
   const hash = query.get('h');
 
   let passWord = query.get("p");
-  console.log(passWord);
   if (passWord) {
     const decipher = crypto.createDecipher('aes-256-cbc', 'key');
     let result2 = decipher.update(passWord, 'hex', 'utf8');
@@ -177,11 +176,6 @@ const Zoom = () => {
               context.actions.setIsIn(true);
             };
             
-            // window.onbeforeunload = window.onunload;
-
-            // window.removeEventListener('onunload', onOut);
-            // window.addEventListener('onunload', onOut);
-
             window.removeEventListener('beforeunload', onOut);
             window.addEventListener('beforeunload', onOut);
           },
@@ -248,6 +242,12 @@ const Zoom = () => {
   const onClickButton = e => {
     sendTraffic(e.target.value);
   };
+
+  if (!hash || !meetingNumber) {
+    return (
+      <h1></h1>
+    );
+  }
 
   return (
     <div className="App">
