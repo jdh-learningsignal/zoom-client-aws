@@ -8,6 +8,7 @@ import { createHmac } from 'crypto';
 import { useLocation } from 'react-router-dom';
 import { listPages } from './graphql/queries';
 import config from './config';
+import naverAPI from './api/naver';
 
 import './Zoom.css';
 
@@ -69,7 +70,9 @@ const Zoom = () => {
     }
   `;
   
-  useEffect(() => {}, []);
+  useEffect(() => {
+    naverAPI.shortenURL('https://openapi.naver.com/v1/util/shorturl');
+  }, []);
 
   function generateSignature() {
     const timestamp = new Date().getTime() - 30000;

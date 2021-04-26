@@ -14,7 +14,7 @@ import { createPage as createPageMutation} from './graphql/mutations';
 import { listTraffics } from './graphql/queries';
 import { createHmac } from 'crypto';
 import config from './config';
-import axios from 'axios';
+import naverAPI from './api/naver'
 
 import AdminContext from './contexts/admin';
 
@@ -44,7 +44,7 @@ const Lecture = () => {
 
     useEffect(() => {
         fetchFile();
-        setBrowserWidth(window.innerWidth);
+        setBrowserWidth(window.innerWidth);        
     }, []);
 
     const fetchFile = async () => {

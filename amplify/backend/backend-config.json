@@ -25,7 +25,18 @@
       "customAuth": false
     }
   },
-  "function": {},
+  "function": {
+    "shortenURL": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "shortenURI": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
   "storage": {
     "pdfstorage": {
       "service": "S3",
