@@ -1,10 +1,9 @@
 import React, { createContext, useState } from 'react';
 
 const AdminContext = createContext({
-    // default state (rapido300@gmail.com)
     state: { 
-        meetingNumber: '4515514600',
-        passWord: '951810'
+        meetingNumber: '',
+        passWord: ''
     },
     actions: {
         setMeetingNumber: () => {},
@@ -13,8 +12,8 @@ const AdminContext = createContext({
 });
 
 const AdminProvider = ({ children }) => {
-    const [meetingNumber, setMeetingNumber] = useState('4515514600');
-    const [passWord, setPassWord] = useState('951810');
+    const [meetingNumber, setMeetingNumber] = useState('');
+    const [passWord, setPassWord] = useState('');
 
     const value = {
         state: { meetingNumber, passWord },

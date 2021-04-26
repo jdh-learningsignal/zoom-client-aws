@@ -8,7 +8,7 @@ import { createHmac } from 'crypto';
 import { useLocation } from 'react-router-dom';
 import { listPages } from './graphql/queries';
 import config from './config';
-import naverAPI from './api/naver';
+import crypto from 'crypto';
 
 import './Zoom.css';
 
@@ -27,10 +27,17 @@ const Zoom = () => {
   const [pageNumber, setPageNumber] = useState(0);
   const [prevFeedTime, setPrevFeedTime] = useState(new Date());
   const divTL = useRef(null);
-  const feedAlertRef = useRef(null);
   const query = new URLSearchParams(useLocation().search);
   const meetingNumber = query.get("meetingNumber");
-  const passWord = query.get("passWord");
+  const hash = query.get('hash');
+
+  let passWord = query.get("passWord");
+  if (passWord) {
+    const decipher = crypto.createDecipher('aes-256-cbc', 'key');
+    let result2 = decipher.update(passWord, 'base64', 'utf8');
+    result2 += decipher.final('utf8');
+    passWord = result2;
+  }
 
   const TrafficButton = styled.button`
     width: 55px;
@@ -116,15 +123,15 @@ const Zoom = () => {
 
   const sendTraffic = async (value) => {
     const currentTime = new Date();
-    if (currentTime.getTime() - prevFeedTime.getTime() < 10000) return ;
-    if (!value || !studentId || !affiliation || !meetingNumber || !query.get('hash')) return ;
+    if (currentTime.getTime() - prevFeedTime.getTime() < 5000) return ;
+    if (!value || !studentId || !affiliation || !meetingNumber || !hash) return ;
 
     const apiData = await API.graphql({ 
       query: listPages,
       variables: {
         filter: {
           hash: {
-            eq: query.get('hash')
+            eq: hash
           }
         }
       }
@@ -149,7 +156,7 @@ const Zoom = () => {
             studentId: studentId, 
             affiliation: affiliation,
             meetingId: meetingNumber,
-            hash: query.get('hash'),
+            hash: hash,
             pageNumber: maxPageNumber,
             state: value,
             dateTime: new Date()

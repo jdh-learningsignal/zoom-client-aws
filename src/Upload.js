@@ -6,8 +6,8 @@ import { API, Storage } from 'aws-amplify';
 import { createFile as createFileMutation} from './graphql/mutations';
 import { withAuthenticator} from '@aws-amplify/ui-react'
 import { createHmac } from 'crypto';
-
 import AdminContext from './contexts/admin';
+import crypto from 'crypto';
 
 const Upload = () => {
     const context = useContext(AdminContext);
@@ -78,7 +78,12 @@ const Upload = () => {
                     암호
                 </h6>
                 <input 
-                    onChange={e => context.actions.setPassWord(e.target.value)}
+                    onChange={e => {
+                        const cipher = crypto.createCipher('aes-256-cbc', 'key');
+                        let result = cipher.update(e.target.value, 'utf8', 'base64');
+                        result += cipher.final('base64');
+                        context.actions.setPassWord(result);
+                    }}
                     placeholder="예) 951810"
                     type="text"
                     style={{
