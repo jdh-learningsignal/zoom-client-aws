@@ -70,9 +70,7 @@ const Zoom = () => {
     }
   `;
   
-  useEffect(() => {
-    naverAPI.shortenURL('https://openapi.naver.com/v1/util/shorturl');
-  }, []);
+  useEffect(() => {}, []);
 
   function generateSignature() {
     const timestamp = new Date().getTime() - 30000;
