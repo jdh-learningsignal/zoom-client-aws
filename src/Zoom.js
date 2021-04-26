@@ -22,6 +22,7 @@ ZoomMtg.preLoadWasm();
 ZoomMtg.prepareJssdk();
 
 const href = window.location.href;
+const agent = window.navigator.userAgent;
 const leaveUrl = href.includes("localhost") ? config.localUrl : href.includes("amplifyapp") ? config.devUrl : config.realUrl;
 const role = 0;
 
@@ -107,6 +108,7 @@ const Zoom = () => {
           studentId: studentId,
           affiliation: affiliation,
           state: 'OUT',
+          device: agent,
           dateTime: new Date()
         }
       } 
@@ -165,6 +167,7 @@ const Zoom = () => {
                     studentId: studentId,
                     affiliation: affiliation,
                     state: 'IN',
+                    device: agent,
                     dateTime: new Date()
                   }
                 } 
@@ -181,7 +184,7 @@ const Zoom = () => {
             // window.removeEventListener('beforeunload', onOut);
             // window.addEventListener('beforeunload', onOut);
 
-            window.onbeforeunload = window.onunload = onOut;
+            window.onunload = window.onbeforeunload = onOut;
           },
           error: (error) => {
             console.log(error)

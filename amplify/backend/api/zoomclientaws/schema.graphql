@@ -32,5 +32,6 @@ type Attendance @model {
   studentId: String!
   affiliation: String!
   state: String!
+  device: String!
   dateTime: AWSDateTime!
 }
