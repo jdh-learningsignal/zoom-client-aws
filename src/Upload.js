@@ -80,8 +80,8 @@ const Upload = () => {
                 <input 
                     onChange={e => {
                         const cipher = crypto.createCipher('aes-256-cbc', 'key');
-                        let result = cipher.update(e.target.value, 'utf8', 'base64');
-                        result += cipher.final('base64');
+                        let result = cipher.update(e.target.value, 'utf8', 'hex');
+                        result += cipher.final('hex');
                         context.actions.setPassWord(result);
                     }}
                     placeholder="예) 951810"

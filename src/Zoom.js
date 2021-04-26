@@ -39,9 +39,10 @@ const Zoom = () => {
   const hash = query.get('h');
 
   let passWord = query.get("p");
+  console.log(passWord);
   if (passWord) {
     const decipher = crypto.createDecipher('aes-256-cbc', 'key');
-    let result2 = decipher.update(passWord, 'base64', 'utf8');
+    let result2 = decipher.update(passWord, 'hex', 'utf8');
     result2 += decipher.final('utf8');
     passWord = result2;
   }
@@ -181,10 +182,8 @@ const Zoom = () => {
             // window.removeEventListener('onunload', onOut);
             // window.addEventListener('onunload', onOut);
 
-            // window.removeEventListener('beforeunload', onOut);
-            // window.addEventListener('beforeunload', onOut);
-
-            window.onunload = window.onbeforeunload = onOut;
+            window.removeEventListener('beforeunload', onOut);
+            window.addEventListener('beforeunload', onOut);
           },
           error: (error) => {
             console.log(error)
