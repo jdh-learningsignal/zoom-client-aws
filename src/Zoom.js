@@ -354,7 +354,8 @@ const Zoom = () => {
           left:"3%", 
           zIndex:"100000"}}>
           <TrafficButton onClick={onClickButton} color="red" value="RED">
-            어려<br/>워요
+            {/* 어려<br/>워요 */}
+            집중<br/>중
           </TrafficButton>
         </div>
         <div 
@@ -364,7 +365,8 @@ const Zoom = () => {
           left:"3%",
           zIndex:"100000"}}>
           <TrafficButton onClick={onClickButton} color="green" value="GREEN">
-            알겠<br/>어요
+            {/* 알겠<br/>어요 */}
+            추천<br/>해요
           </TrafficButton>
         </div>
       </div>
