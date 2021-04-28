@@ -145,3 +145,166 @@ export const listAttendances = /* GraphQL */ `
     }
   }
 `;
+export const getTraffics = /* GraphQL */ `
+  query GetTraffics($id: ID!) {
+    getTraffics(id: $id) {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTrafficss = /* GraphQL */ `
+  query ListTrafficss(
+    $filter: ModelTrafficsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrafficss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        studentId
+        affiliation
+        hash
+        pageNumber
+        state
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getFiles = /* GraphQL */ `
+  query GetFiles($id: ID!) {
+    getFiles(id: $id) {
+      id
+      name
+      hash
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listFiless = /* GraphQL */ `
+  query ListFiless(
+    $filter: ModelFilesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFiless(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        hash
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPages = /* GraphQL */ `
+  query GetPages($id: ID!) {
+    getPages(id: $id) {
+      id
+      hash
+      numPages
+      pageNumber
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPagess = /* GraphQL */ `
+  query ListPagess(
+    $filter: ModelPagesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPagess(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        hash
+        numPages
+        pageNumber
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getAttendances = /* GraphQL */ `
+  query GetAttendances($id: ID!) {
+    getAttendances(id: $id) {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      device
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listAttendancess = /* GraphQL */ `
+  query ListAttendancess(
+    $filter: ModelAttendancesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAttendancess(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        hash
+        meetingId
+        userName
+        studentId
+        affiliation
+        state
+        device
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getCurrentPages = /* GraphQL */ `
+  query GetCurrentPages($id: ID!) {
+    getCurrentPages(id: $id) {
+      id
+      hash
+      pageNumber
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listCurrentPagess = /* GraphQL */ `
+  query ListCurrentPagess(
+    $filter: ModelCurrentPagesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCurrentPagess(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        hash
+        pageNumber
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

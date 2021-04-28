@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import styled from "styled-components";
 import './Upload.css';
 import { API, Storage } from 'aws-amplify';
-import { createFile as createFileMutation} from './graphql/mutations';
+import { createFiles as createFilesMutation } from './graphql/mutations';
 import { withAuthenticator} from '@aws-amplify/ui-react'
 import { createHmac } from 'crypto';
 import AdminContext from './contexts/admin';
@@ -30,12 +29,11 @@ const Upload = () => {
         if (!name || !hash) return;
     
         await API.graphql({ 
-          query: createFileMutation, 
+          query: createFilesMutation, 
           variables: { 
             input: {
                 name: name, 
-                hash: hash,
-                uploadedTime: new Date()
+                hash: hash
             }
           } 
         });

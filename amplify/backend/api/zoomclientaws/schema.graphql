@@ -35,3 +35,42 @@ type Attendance @model {
   device: String!
   dateTime: AWSDateTime!
 }
+
+type Traffics @model {
+  id: ID!
+  studentId: String!
+  affiliation: String!
+  hash: String!
+  pageNumber: Int!
+  state: String!
+}
+
+type Files @model {
+  id: ID!
+  name: String!
+  hash: String!
+}
+
+type Pages @model {
+  id: ID!
+  hash: String!
+  numPages: Int!
+  pageNumber: Int!
+}
+
+type Attendances @model {
+  id: ID!
+  hash: String!
+  meetingId: String!
+  userName: String!
+  studentId: String!
+  affiliation: String!
+  state: String!
+  device: String!
+}
+
+type CurrentPages @model {
+  id: ID!
+  hash: String!
+  pageNumber: Int!
+}

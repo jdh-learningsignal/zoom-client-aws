@@ -175,3 +175,195 @@ export const onDeleteAttendance = /* GraphQL */ `
     }
   }
 `;
+export const onCreateTraffics = /* GraphQL */ `
+  subscription OnCreateTraffics {
+    onCreateTraffics {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTraffics = /* GraphQL */ `
+  subscription OnUpdateTraffics {
+    onUpdateTraffics {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTraffics = /* GraphQL */ `
+  subscription OnDeleteTraffics {
+    onDeleteTraffics {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateFiles = /* GraphQL */ `
+  subscription OnCreateFiles {
+    onCreateFiles {
+      id
+      name
+      hash
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateFiles = /* GraphQL */ `
+  subscription OnUpdateFiles {
+    onUpdateFiles {
+      id
+      name
+      hash
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteFiles = /* GraphQL */ `
+  subscription OnDeleteFiles {
+    onDeleteFiles {
+      id
+      name
+      hash
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePages = /* GraphQL */ `
+  subscription OnCreatePages {
+    onCreatePages {
+      id
+      hash
+      numPages
+      pageNumber
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePages = /* GraphQL */ `
+  subscription OnUpdatePages {
+    onUpdatePages {
+      id
+      hash
+      numPages
+      pageNumber
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePages = /* GraphQL */ `
+  subscription OnDeletePages {
+    onDeletePages {
+      id
+      hash
+      numPages
+      pageNumber
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateAttendances = /* GraphQL */ `
+  subscription OnCreateAttendances {
+    onCreateAttendances {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      device
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateAttendances = /* GraphQL */ `
+  subscription OnUpdateAttendances {
+    onUpdateAttendances {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      device
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteAttendances = /* GraphQL */ `
+  subscription OnDeleteAttendances {
+    onDeleteAttendances {
+      id
+      hash
+      meetingId
+      userName
+      studentId
+      affiliation
+      state
+      device
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateCurrentPages = /* GraphQL */ `
+  subscription OnCreateCurrentPages {
+    onCreateCurrentPages {
+      id
+      hash
+      pageNumber
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateCurrentPages = /* GraphQL */ `
+  subscription OnUpdateCurrentPages {
+    onUpdateCurrentPages {
+      id
+      hash
+      pageNumber
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteCurrentPages = /* GraphQL */ `
+  subscription OnDeleteCurrentPages {
+    onDeleteCurrentPages {
+      id
+      hash
+      pageNumber
+      createdAt
+      updatedAt
+    }
+  }
+`;
