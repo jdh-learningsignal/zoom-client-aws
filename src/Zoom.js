@@ -192,7 +192,7 @@ const Zoom = () => {
 
   const sendTraffic = async (value) => {
     const currentTime = new Date();
-    if (currentTime.getTime() - prevFeedTime.getTime() < 5000) return ;
+    if (currentTime.getTime() - prevFeedTime.getTime() < 3000) return ;
     if (!value || !studentId || !affiliation || !meetingNumber || !hash) return ;
 
     const apiData = await API.graphql({ 
@@ -354,8 +354,7 @@ const Zoom = () => {
           left:"3%", 
           zIndex:"100000"}}>
           <TrafficButton onClick={onClickButton} color="red" value="RED">
-            {/* 어려<br/>워요 */}
-            집중<br/>중
+            어려<br/>워요
           </TrafficButton>
         </div>
         <div 
@@ -365,8 +364,7 @@ const Zoom = () => {
           left:"3%",
           zIndex:"100000"}}>
           <TrafficButton onClick={onClickButton} color="green" value="GREEN">
-            {/* 알겠<br/>어요 */}
-            추천<br/>해요
+            알겠<br/>어요
           </TrafficButton>
         </div>
       </div>

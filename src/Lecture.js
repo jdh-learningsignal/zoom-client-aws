@@ -228,10 +228,8 @@ const Lecture = () => {
                             loader={<div>Loading...</div>}
                             data={[
                                 ['응답', '횟수'],
-                                // ['알겠어요', totalGreens],
-                                // ['어려워요', totalReds],
-                                ['추천해요', totalGreens],
-                                ['집중 중', totalReds]
+                                ['알겠어요', totalGreens],
+                                ['어려워요', totalReds]
                             ]}
                             options={{
                                 title: '총 응답',
@@ -248,10 +246,8 @@ const Lecture = () => {
                             loader={<div>Loading...</div>}
                             data={[
                                 ['응답', '횟수'],
-                                // ['알겠어요', prevGreens],
-                                // ['어려워요', prevReds],
-                                ['추천해요', prevGreens],
-                                ['집중 중', prevReds]
+                                ['알겠어요', prevGreens],
+                                ['어려워요', prevReds]
                             ]}
                             options={{
                                 title: '이전 슬라이드 응답',
@@ -266,7 +262,7 @@ const Lecture = () => {
                             width={browserWidth * 0.35}
                             chartType="LineChart"
                             loader={<div>Loading...</div>}
-                            data={[['x', '추천해요', '집중 중'], ...traffics]}
+                            data={[['x', '알겠어요', '어려워요'], ...traffics]}
                             options={{
                                 hAxis: {
                                     title: '페이지'
