@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import jwt from 'jsonwebtoken';
 import { useParams } from 'react-router-dom';
-import styled from "styled-components";
 import './Lecture.css';
 import { API, Storage } from 'aws-amplify';
 import { withAuthenticator } from '@aws-amplify/ui-react'
@@ -76,19 +75,36 @@ const Lecture = () => {
         const maxPageNumber = Math.max(...items.map((value) => value.pageNumber));
 
         const traffics = [];
-        for (let i = 1; i <= maxPageNumber; i++) traffics.push([i, 0, 0]);
-        
+        for (let i = 1; i <= maxPageNumber; i++) traffics.push([i, 0, 0]);        
+
+        items.sort((a, b) => {
+            if (a.createdAt > b.createdAt) {
+              return -1;
+            }
+            if (a.createdAt < b.createdAt) {
+              return 1;
+            }
+            return 0;
+        });
+
+        let set = new Set();
         items.forEach(value => {
-            if (value.state === 'GREEN') {
-                traffics[value.pageNumber - 1][1] = traffics[value.pageNumber - 1][1] + 1;
-            } else {
-                traffics[value.pageNumber - 1][2] = traffics[value.pageNumber - 1][2] + 1; 
-            } 
+            if (!set.has(value.affiliation + "," + value.studentId + "," + value.pageNumber)) {
+                if (value.state === 'GREEN') {
+                    traffics[value.pageNumber - 1][1] = traffics[value.pageNumber - 1][1] + 1;
+                } else {
+                    traffics[value.pageNumber - 1][2] = traffics[value.pageNumber - 1][2] + 1; 
+                } 
+
+                set.add(value.affiliation + "," + value.studentId + "," + value.pageNumber);
+            }
         });
         
         setTraffics([...traffics]);
+
         setTotalGreens([...traffics].map(value => value[1]).reduce((accumulator, value) => accumulator + value));
         setTotalReds([...traffics].map(value => value[2]).reduce((accumulator, value) => accumulator + value));
+
         setPrevGreens([...traffics].map(value => value[1])[pageNumber - 1]);
         setPrevReds([...traffics].map(value => value[2])[pageNumber - 1]);
 
@@ -214,17 +230,31 @@ const Lecture = () => {
 
         if (items.length === 0) return;
 
+        items.sort((a, b) => {
+            if (a.createdAt > b.createdAt) {
+              return -1;
+            }
+            if (a.createdAt < b.createdAt) {
+              return 1;
+            }
+            return 0;
+        });
+
         const result = items.filter(value => value.createdAt >= updatedTime);
 
+        let set = new Set();
         let greenNumber = 0;
         let redNumber = 0;
-
         result.forEach(value => {
-            if (value.state === 'GREEN') {
-                greenNumber += 1;
-            } else {
-                redNumber += 1; 
-            } 
+            if (!set.has(value.affiliation + "," + value.studentId + "," + value.pageNumber)) {
+                if (value.state === 'GREEN') {
+                    greenNumber += 1;
+                } else {
+                    redNumber += 1; 
+                } 
+            }
+
+            set.add(value.affiliation + "," + value.studentId + "," + value.pageNumber);
         });
 
         setCurrentGreens(greenNumber);
@@ -255,8 +285,8 @@ const Lecture = () => {
                         </Document>
                         <div 
                             style={{
-                                left:"33.3%",
-                                bottom:"15%",
+                                right:"25.8%",
+                                bottom:"17%",
                                 position:"fixed",
                                 fontWeight: "normal"
                             }}
@@ -267,8 +297,8 @@ const Lecture = () => {
                             onClick={onPrevPage}
                             style={{
                                 position: "fixed",
-                                right:"26%",
-                                bottom:"18%"
+                                right:"27%",
+                                bottom:"13%"
                             }}
                         >
                             &lt;
@@ -278,8 +308,8 @@ const Lecture = () => {
                             onClick={onNextPage}
                             style={{
                                 position: "fixed",
-                                right:"23%",
-                                bottom:"18%"
+                                right:"25%",
+                                bottom:"13%"
                             }}
                         >
                             &gt;
@@ -372,7 +402,7 @@ const Lecture = () => {
                                 zIndex: 6
                             }}
                         >
-                            새로고침
+                            확인
                         </Button>
                         <Chart
                             style={{
@@ -398,7 +428,7 @@ const Lecture = () => {
                             onClick={onCopyLink}
                             variant="primary"
                             style={{
-                                right:"10%",
+                                right:"5%",
                                 bottom:"17%",
                                 position:"fixed"
                             }}
@@ -410,7 +440,7 @@ const Lecture = () => {
                             value={`${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`}
                             style={{
                                 width: "119px",
-                                right:"10%",
+                                right:"5%",
                                 bottom:"12.3%",
                                 position:"fixed"
                             }}
@@ -433,7 +463,7 @@ const Lecture = () => {
                                 textAlign: "center",
                                 width: "8%",
                                 margin: "auto",
-                                right:"10%",
+                                right:"5%",
                                 bottom:"5%",
                                 position:"fixed",
                                 textAlign: "center"
