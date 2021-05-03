@@ -55,20 +55,50 @@ const Lecture = () => {
         const file = await Storage.get(hash);
         setFile(file);
     };
+    
+    const listApiData = async (hash) => {
+        let items = [];
+        let nextToken = null;
+
+        while (true) {
+            let apiData;
+
+            if (nextToken) {
+                apiData = await API.graphql({
+                    query: listTrafficss,
+                    variables: {
+                        filter: {
+                            hash: {
+                                eq: hash
+                            }
+                        },
+                        nextToken: nextToken
+                    }
+                });
+            } else {
+                apiData = await API.graphql({
+                    query: listTrafficss,
+                    variables: {
+                        filter: {
+                            hash: {
+                                eq: hash
+                            }
+                        }
+                    }
+                });
+            }
+            
+            items = [...items, ...apiData.data.listTrafficss.items];
+            nextToken = apiData.data.listTrafficss.nextToken;
+
+            if (!nextToken) break;
+        }
+        
+        return items;
+    };
 
     const fetchTraffics = async () => {
-        const listApiData = await API.graphql({
-            query: listTrafficss,
-            variables: {
-                filter: {
-                    hash: {
-                        eq: hash
-                    }
-                }
-            }
-        });
-
-        const items = listApiData.data.listTrafficss.items;
+        const items = await listApiData(hash);
 
         if (items.length === 0) return;
         
@@ -77,15 +107,7 @@ const Lecture = () => {
         const traffics = [];
         for (let i = 1; i <= maxPageNumber; i++) traffics.push([i, 0, 0]);        
 
-        items.sort((a, b) => {
-            if (a.createdAt > b.createdAt) {
-              return -1;
-            }
-            if (a.createdAt < b.createdAt) {
-              return 1;
-            }
-            return 0;
-        });
+        items.sort(sortItems);
 
         let set = new Set();
         items.forEach(value => {
@@ -169,8 +191,10 @@ const Lecture = () => {
 
         setPrevGreens([...traffics].map(value => value[1])[pageNumber - 3]);
         setPrevReds([...traffics].map(value => value[2])[pageNumber - 3]);
+
         setPrevCurrentGreens([...traffics].map(value => value[1])[pageNumber - 2]);
         setPrevCurrentReds([...traffics].map(value => value[2])[pageNumber - 2]);
+        
         setCurrentGreens(0);
         setCurrentReds(0);
     };
@@ -205,6 +229,12 @@ const Lecture = () => {
         fetchTraffics();
     };
 
+    const sortItems = (a, b) => {
+        if (a.createdAt > b.createdAt) return -1;
+        if (a.createdAt < b.createdAt) return 1;
+        return 0;
+    };
+
     const onFetchCurrentTraffics = async () => {
         const getApiData = await API.graphql({ 
             query: getCurrentPages,
@@ -215,30 +245,11 @@ const Lecture = () => {
         
         const updatedTime = getApiData.data.getCurrentPages.updatedAt;
 
-        const listApiData = await API.graphql({
-            query: listTrafficss,
-            variables: {
-                filter: {
-                    hash: {
-                        eq: hash
-                    }
-                }
-            }
-        });
-
-        const items = listApiData.data.listTrafficss.items;
+        const items = await listApiData(hash);
 
         if (items.length === 0) return;
 
-        items.sort((a, b) => {
-            if (a.createdAt > b.createdAt) {
-              return -1;
-            }
-            if (a.createdAt < b.createdAt) {
-              return 1;
-            }
-            return 0;
-        });
+        items.sort(sortItems);
 
         const result = items.filter(value => value.createdAt >= updatedTime);
 
@@ -358,7 +369,7 @@ const Lecture = () => {
                             style={{
                                 position: "fixed",
                                 right:"13%",
-                                top:"22%",
+                                top:"24%",
                                 zIndex: 3
                             }}
                             width={browserWidth * 0.16}
@@ -377,7 +388,7 @@ const Lecture = () => {
                             style={{
                                 position: "fixed",
                                 right:"0%",
-                                top:"22%",
+                                top:"24%",
                                 zIndex: 4
                             }}
                             width={browserWidth * 0.16}
@@ -397,7 +408,7 @@ const Lecture = () => {
                             variant="primary"
                             style={{
                                 right:"1%",
-                                top:"36%",
+                                top:"38%",
                                 position:"fixed",
                                 zIndex: 6
                             }}

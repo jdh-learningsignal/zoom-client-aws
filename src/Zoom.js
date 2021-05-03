@@ -162,7 +162,7 @@ const Zoom = () => {
 
     const sendTraffic = async (value) => {
         const currentTime = new Date();
-        if (currentTime.getTime() - prevFeedTime.getTime() < 10000) return ;
+        if (currentTime.getTime() - prevFeedTime.getTime() < 2000) return ;
         if (!value || !studentId || !affiliation || !hash) return ;
 
         // 가장 최신 페이지 가져오기
