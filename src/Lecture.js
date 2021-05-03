@@ -296,40 +296,40 @@ const Lecture = () => {
                         <Document
                             file={file}
                             onLoadSuccess={onDocumentLoadSuccess}
-                            width={'100%'}
+                            width={"100%"}
                         >
-                            <Page 
+                            <Page
                                 pageNumber={pageNumber}
                                 width={browserWidth * 0.7}
                             />
                         </Document>
-                        <div 
+                        <div
                             style={{
-                                right:"25.8%",
-                                bottom:"17%",
-                                position:"fixed",
-                                fontWeight: "normal"
+                                right: "25.5%",
+                                bottom: "17%",
+                                position: "fixed",
+                                fontWeight: "normal",
                             }}
                         >
                             {pageNumber} / {numPages}
                         </div>
-                        <Button 
+                        <Button
                             onClick={onPrevPage}
                             style={{
                                 position: "fixed",
-                                right:"27%",
-                                bottom:"13%"
+                                right: "27%",
+                                bottom: "13%",
                             }}
                         >
                             &lt;
                         </Button>
-                        
-                        <Button 
+
+                        <Button
                             onClick={onNextPage}
                             style={{
                                 position: "fixed",
-                                right:"25%",
-                                bottom:"13%"
+                                right: "24.5%",
+                                bottom: "13%",
                             }}
                         >
                             &gt;
@@ -339,87 +339,87 @@ const Lecture = () => {
                         <Chart
                             style={{
                                 position: "fixed",
-                                right:"0%",
-                                top:"0%",
-                                zIndex: 2
+                                right: "0%",
+                                top: "0%",
+                                zIndex: 2,
                             }}
                             width={browserWidth * 0.16}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
-                                ['응답', '횟수'],
-                                ['알겠어요', totalGreens],
-                                ['어려워요', totalReds]
+                                ["응답", "횟수"],
+                                ["알겠어요", totalGreens],
+                                ["어려워요", totalReds],
                             ]}
                             options={{
-                                title: '총 응답',
+                                title: "총 응답",
                             }}
                         />
                         <Chart
                             style={{
                                 position: "fixed",
-                                right:"13%",
-                                top:"0%",
-                                zIndex: 1
+                                right: "13%",
+                                top: "0%",
+                                zIndex: 1,
                             }}
                             width={browserWidth * 0.16}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
-                                ['응답', '횟수'],
-                                ['알겠어요', prevGreens],
-                                ['어려워요', prevReds]
+                                ["응답", "횟수"],
+                                ["알겠어요", prevGreens],
+                                ["어려워요", prevReds],
                             ]}
                             options={{
-                                title: '이전 페이지의 응답',
+                                title: "이전 페이지의 응답",
                             }}
                         />
                         <Chart
                             style={{
                                 position: "fixed",
-                                right:"13%",
-                                top:"24%",
-                                zIndex: 3
+                                right: "13%",
+                                top: "24%",
+                                zIndex: 3,
                             }}
                             width={browserWidth * 0.16}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
-                                ['응답', '횟수'],
-                                ['알겠어요', prevCurrentGreens],
-                                ['어려워요', prevCurrentReds]
+                                ["응답", "횟수"],
+                                ["알겠어요", prevCurrentGreens],
+                                ["어려워요", prevCurrentReds],
                             ]}
                             options={{
-                                title: '현재 페이지의 과거 응답',
+                                title: "현재 페이지의 과거 응답",
                             }}
                         />
                         <Chart
                             style={{
                                 position: "fixed",
-                                right:"0%",
-                                top:"24%",
-                                zIndex: 4
+                                right: "0%",
+                                top: "24%",
+                                zIndex: 4,
                             }}
                             width={browserWidth * 0.16}
                             chartType="PieChart"
                             loader={<div>Loading...</div>}
                             data={[
-                                ['응답', '횟수'],
-                                ['알겠어요', currentGreens],
-                                ['어려워요', currentReds]
+                                ["응답", "횟수"],
+                                ["알겠어요", currentGreens],
+                                ["어려워요", currentReds],
                             ]}
                             options={{
-                                title: '현재 페이지의 실시간 응답',
+                                title: "현재 페이지의 실시간 응답",
                             }}
                         />
-                        <Button 
+                        <Button
                             onClick={onFetchCurrentTraffics}
                             variant="primary"
                             style={{
-                                right:"1%",
-                                top:"38%",
-                                position:"fixed",
-                                zIndex: 6
+                                right: "1%",
+                                top: "38%",
+                                position: "fixed",
+                                zIndex: 6,
                             }}
                         >
                             확인
@@ -427,46 +427,46 @@ const Lecture = () => {
                         <Chart
                             style={{
                                 position: "fixed",
-                                right:"0%",
-                                top:"45%",
-                                zIndex: 5
+                                right: "0%",
+                                top: "45%",
+                                zIndex: 5,
                             }}
                             width={browserWidth * 0.29}
                             chartType="LineChart"
                             loader={<div>Loading...</div>}
-                            data={[['x', '알겠어요', '어려워요'], ...traffics]}
+                            data={[["x", "알겠어요", "어려워요"], ...traffics]}
                             options={{
                                 hAxis: {
-                                    title: '페이지'
+                                    title: "페이지",
                                 },
                                 vAxis: {
-                                    title: '페이지 별 응답 변화 추이'
-                                }
+                                    title: "페이지 별 응답 변화 추이",
+                                },
                             }}
                         />
-                        <Button 
+                        <Button
                             onClick={onCopyLink}
                             variant="primary"
                             style={{
-                                right:"5%",
-                                bottom:"17%",
-                                position:"fixed"
+                                right: "5%",
+                                bottom: "17%",
+                                position: "fixed",
                             }}
                         >
                             강의실 링크 복사
-                        </Button>{' '}
-                        <input 
+                        </Button>{" "}
+                        <input
                             ref={copyLinkRef}
                             value={`${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`}
                             style={{
                                 width: "119px",
-                                right:"5%",
-                                bottom:"12.3%",
-                                position:"fixed"
+                                right: "5%",
+                                bottom: "12.3%",
+                                position: "fixed",
                             }}
-                        >
-                        </input>
-                        <Link to={`/admin`} 
+                        ></input>
+                        <Link
+                            to={`/admin`}
                             style={{
                                 marginTop: "50px",
                                 backgroundColor: "grey",
@@ -483,10 +483,10 @@ const Lecture = () => {
                                 textAlign: "center",
                                 width: "8%",
                                 margin: "auto",
-                                right:"5%",
-                                bottom:"5%",
-                                position:"fixed",
-                                textAlign: "center"
+                                right: "5%",
+                                bottom: "5%",
+                                position: "fixed",
+                                textAlign: "center",
                             }}
                         >
                             강의 종료
