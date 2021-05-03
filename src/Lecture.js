@@ -199,31 +199,40 @@ const Lecture = () => {
         setCurrentReds(0);
     };
 
+    function getData() {
+        const apiName = "shortenURL";
+        const path = "/items";
+        const init = {};
+
+        return API.get(apiName, path, init);
+    }
+
     const onNextPage = async () => {
         if (pageNumber >= numPages) return;
+
         const temp = pageNumber;
         setPageNumber(temp + 1);
 
         if (!hash || !numPages || !temp) return;
-        await API.graphql({ 
-            query: createPagesMutation, 
-            variables: { 
+        await API.graphql({
+            query: createPagesMutation,
+            variables: {
                 input: {
-                    hash: hash, 
+                    hash: hash,
                     numPages: numPages,
-                    pageNumber: temp + 1
-                }
-            }
+                    pageNumber: temp + 1,
+                },
+            },
         });
 
-        await API.graphql({ 
-            query: updateCurrentPagesMutation, 
-            variables: { 
-              input: {
-                  id: hash,
-                  pageNumber: temp + 1
-                }
-            }
+        await API.graphql({
+            query: updateCurrentPagesMutation,
+            variables: {
+                input: {
+                    id: hash,
+                    pageNumber: temp + 1,
+                },
+            },
         });
 
         fetchTraffics();

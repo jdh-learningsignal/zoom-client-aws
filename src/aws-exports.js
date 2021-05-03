@@ -7,6 +7,13 @@ const awsmobile = {
     "aws_appsync_region": "ap-northeast-2",
     "aws_appsync_authenticationType": "API_KEY",
     "aws_appsync_apiKey": "da2-j5ymrnchmjaxhesdhnqpddx3y4",
+    "aws_cloud_logic_custom": [
+        {
+            "name": "shortenURL",
+            "endpoint": "https://wugidayw80.execute-api.ap-northeast-2.amazonaws.com/staging",
+            "region": "ap-northeast-2"
+        }
+    ],
     "aws_cognito_identity_pool_id": "ap-northeast-2:107f6fc3-0c46-4aec-8141-b568808a4de8",
     "aws_cognito_region": "ap-northeast-2",
     "aws_user_pools_id": "ap-northeast-2_pFuKNkm89",

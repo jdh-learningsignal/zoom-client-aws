@@ -1,9 +1,31 @@
-const awsServerlessExpress = require('aws-serverless-express');
-const app = require('./app');
+const { default: axios } = require("axios");
 
-const server = awsServerlessExpress.createServer(app);
+const client_id = '7pQYtV_au9iewBtjLqW9';
+const client_secret = '8IEuvLlN7C';
+const api_url = 'https://openapi.naver.com/v1/util/shorturl';
 
-exports.handler = (event, context) => {
-  console.log(`EVENT: ${JSON.stringify(event)}`);
-  return awsServerlessExpress.proxy(server, event, context, 'PROMISE').promise;
+exports.handler = async (event) => {
+    const options = {
+        method: 'get',
+        url: api_url,
+        data: {
+            'url': "www.naver.com"
+        },
+        headers: {
+            'X-Naver-Client-Id': client_id, 
+            'X-Naver-Client-Secret': client_secret}
+    };
+
+    const result = await axios(config);
+
+    const response = {
+        statusCode: 200,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*"
+        }, 
+        body: JSON.stringify(result),
+    };
+    
+    return response;
 };
