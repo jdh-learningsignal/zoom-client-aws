@@ -44,7 +44,13 @@ const Lecture = () => {
     const [currentReds, setCurrentReds] = useState(0);
     const [currentGreens, setCurrentGreens] = useState(0);
     const [browserWidth, setBrowserWidth] = useState(window.innerWidth);
-    const [shortURL, setShortURL] = useState("");
+    const [fURL, setFURL] = useState(
+        `${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`
+    );
+    const [sURL, setSURL] = useState(
+        `${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`
+    );
+    
     const copyOriginLinkRef = useRef(null);
     const copyShortLinkRef = useRef(null);
 
@@ -69,9 +75,7 @@ const Lecture = () => {
     useEffect(async () => {
         fetchFile();
         setBrowserWidth(window.innerWidth);
-        const fURL = `${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`;
-        const sURL = await shortenURL(fURL);
-        setShortURL(sURL);
+        setSURL(await shortenURL(fURL));
     }, []);
 
     const fetchFile = async () => {
@@ -479,7 +483,7 @@ const Lecture = () => {
                         </Button>{" "}
                         <input
                             ref={copyShortLinkRef}
-                            value={shortURL}
+                            value={sURL}
                             style={{
                                 width: "119px",
                                 right: "5%",
@@ -500,7 +504,7 @@ const Lecture = () => {
                         </Button>{" "}
                         <input
                             ref={copyOriginLinkRef}
-                            value={`${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`}
+                            value={fURL}
                             style={{
                                 width: "119px",
                                 right: "5%",
