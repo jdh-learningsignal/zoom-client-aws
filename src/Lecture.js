@@ -31,7 +31,7 @@ const token = jwt.sign(payload, config.apiSecret);
 const Lecture = () => {
     const context = useContext(AdminContext);
     const { hash } = useParams();
-    const [file, setFile] = useState('');
+    const [file, setFile] = useState("");
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [traffics, setTraffics] = useState([[1, 0, 0]]);
@@ -44,45 +44,54 @@ const Lecture = () => {
     const [currentReds, setCurrentReds] = useState(0);
     const [currentGreens, setCurrentGreens] = useState(0);
     const [browserWidth, setBrowserWidth] = useState(window.innerWidth);
+    const [fakeKey, setFakeKey] = useState(false);
     const [fURL, setFURL] = useState(
         `${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`
     );
     const [sURL, setSURL] = useState(
         `${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`
     );
-    
+
     const copyOriginLinkRef = useRef(null);
     const copyShortLinkRef = useRef(null);
 
     const shortenURL = async (url) => {
-        const apiName = 'utils';
-        const path = '/utils/shortenURL';
+        const apiName = "utils";
+        const path = "/utils/shortenURL";
         const myInit = {
-            'queryStringParameters': {
-                'encodeURI': encodeURI(url)
-            }
+            queryStringParameters: {
+                encodeURI: encodeURI(url),
+            },
         };
 
         const response = await API.get(apiName, path, myInit);
 
         if (response.code === "200") {
-            return response.result.url;
+            setSURL(response.result.url);
         } else {
-            return url;
+            setSURL(url);
         }
     };
-    
-    useEffect(async () => {
-        fetchFile();
-        setBrowserWidth(window.innerWidth);
-        setSURL(await shortenURL(fURL));
-    }, []);
 
     const fetchFile = async () => {
         const file = await Storage.get(hash);
         setFile(file);
     };
-    
+
+    const handleResize = () => {
+        setFakeKey((prevKey) => !prevKey);
+        setBrowserWidth(window.innerWidth);
+    };
+
+    useEffect(() => {
+        fetchFile();
+        setBrowserWidth(window.innerWidth);
+        shortenURL(fURL);
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const listApiData = async (hash) => {
         let items = [];
         let nextToken = null;
@@ -96,11 +105,11 @@ const Lecture = () => {
                     variables: {
                         filter: {
                             hash: {
-                                eq: hash
-                            }
+                                eq: hash,
+                            },
                         },
-                        nextToken: nextToken
-                    }
+                        nextToken: nextToken,
+                    },
                 });
             } else {
                 apiData = await API.graphql({
@@ -108,19 +117,19 @@ const Lecture = () => {
                     variables: {
                         filter: {
                             hash: {
-                                eq: hash
-                            }
-                        }
-                    }
+                                eq: hash,
+                            },
+                        },
+                    },
                 });
             }
-            
+
             items = [...items, ...apiData.data.listTrafficss.items];
             nextToken = apiData.data.listTrafficss.nextToken;
 
             if (!nextToken) break;
         }
-        
+
         return items;
     };
 
@@ -183,7 +192,7 @@ const Lecture = () => {
         let curPage = pageNumber;
         if (direction === "NEXT") curPage = curPage + 1;
         else curPage = curPage - 1;
-        
+
         setPrevGreens([...traffics].map((value) => value[1])[curPage - 2]);
         setPrevReds([...traffics].map((value) => value[2])[curPage - 2]);
 
@@ -198,75 +207,74 @@ const Lecture = () => {
 
     const onDocumentLoadSuccess = async ({ numPages }) => {
         setNumPages(numPages);
-        await API.graphql({ 
-            query: createPagesMutation, 
-            variables: { 
-              input: {
-                  hash: hash, 
-                  numPages: numPages,
-                  pageNumber: pageNumber
-                }
-            }
-        }); 
-        
+        await API.graphql({
+            query: createPagesMutation,
+            variables: {
+                input: {
+                    hash: hash,
+                    numPages: numPages,
+                    pageNumber: pageNumber,
+                },
+            },
+        });
+
         try {
-            const apiData = await API.graphql({ 
+            const apiData = await API.graphql({
                 query: getCurrentPages,
                 variables: {
-                    id: hash
-                }
+                    id: hash,
+                },
             });
 
             if (apiData.data) {
-                await API.graphql({ 
-                    query: updateCurrentPagesMutation, 
-                    variables: { 
-                      input: {
-                          id: hash,
-                          pageNumber: pageNumber
-                        }
-                    }
+                await API.graphql({
+                    query: updateCurrentPagesMutation,
+                    variables: {
+                        input: {
+                            id: hash,
+                            pageNumber: pageNumber,
+                        },
+                    },
                 });
             }
         } catch (e) {
-            await API.graphql({ 
-                query: createCurrentPagesMutation, 
-                variables: { 
-                  input: {
-                      id: hash,
-                      hash: hash,
-                      pageNumber: pageNumber
-                    }
-                }
+            await API.graphql({
+                query: createCurrentPagesMutation,
+                variables: {
+                    input: {
+                        id: hash,
+                        hash: hash,
+                        pageNumber: pageNumber,
+                    },
+                },
             });
         }
     };
-    
 
     const onPrevPage = async () => {
         if (pageNumber <= 1) return;
         const temp = pageNumber;
 
         if (!hash || !numPages || !temp) return;
-        await API.graphql({ 
-            query: createPagesMutation, 
-            variables: { 
+        await API.graphql({
+            query: createPagesMutation,
+            variables: {
                 input: {
-                    hash: hash, 
+                    hash: hash,
                     numPages: numPages,
-                    pageNumber: temp - 1
-                }
-            }
+                    pageNumber: temp - 1,
+                },
+            },
         });
 
-        await API.graphql({ 
-            query: updateCurrentPagesMutation, 
-            variables: { 
-              input: {
-                  id: hash,
-                  pageNumber: temp - 1
-                }
-            }
+        await API.graphql({
+            query: updateCurrentPagesMutation,
+            variables: {
+                input: {
+                    id: hash,
+                    pageNumber: temp - 1,
+                },
+            },
         });
 
         setPageNumber(temp - 1);
@@ -314,13 +322,13 @@ const Lecture = () => {
     };
 
     const onFetchCurrentTraffics = async () => {
-        const getApiData = await API.graphql({ 
+        const getApiData = await API.graphql({
             query: getCurrentPages,
             variables: {
-                id: hash
-            }
+                id: hash,
+            },
         });
-        
+
         const updatedTime = getApiData.data.getCurrentPages.updatedAt;
 
         const items = await listApiData(hash);
@@ -329,21 +337,35 @@ const Lecture = () => {
 
         items.sort(sortItems);
 
-        const result = items.filter(value => value.createdAt >= updatedTime);
+        const result = items.filter((value) => value.createdAt >= updatedTime);
 
         let set = new Set();
         let greenNumber = 0;
         let redNumber = 0;
-        result.forEach(value => {
-            if (!set.has(value.affiliation + "," + value.studentId + "," + value.pageNumber)) {
-                if (value.state === 'GREEN') {
+        result.forEach((value) => {
+            if (
+                !set.has(
+                    value.affiliation +
+                        "," +
+                        value.studentId +
+                        "," +
+                        value.pageNumber
+                )
+            ) {
+                if (value.state === "GREEN") {
                     greenNumber += 1;
                 } else {
-                    redNumber += 1; 
-                } 
+                    redNumber += 1;
+                }
             }
 
-            set.add(value.affiliation + "," + value.studentId + "," + value.pageNumber);
+            set.add(
+                value.affiliation +
+                    "," +
+                    value.studentId +
+                    "," +
+                    value.pageNumber
+            );
         });
 
         setCurrentGreens(greenNumber);
@@ -413,6 +435,7 @@ const Lecture = () => {
                     </Col>
                     <Col sm={3}>
                         <Chart
+                            key={fakeKey}
                             style={{
                                 position: "fixed",
                                 right: "0%",
@@ -432,6 +455,7 @@ const Lecture = () => {
                             }}
                         />
                         <Chart
+                            key={fakeKey}
                             style={{
                                 position: "fixed",
                                 right: "13%",
@@ -451,6 +475,7 @@ const Lecture = () => {
                             }}
                         />
                         <Chart
+                            key={fakeKey}
                             style={{
                                 position: "fixed",
                                 right: "13%",
@@ -470,6 +495,7 @@ const Lecture = () => {
                             }}
                         />
                         <Chart
+                            key={fakeKey}
                             style={{
                                 position: "fixed",
                                 right: "0%",
@@ -501,6 +527,7 @@ const Lecture = () => {
                             확인
                         </Button>
                         <Chart
+                            key={fakeKey}
                             style={{
                                 position: "fixed",
                                 right: "0%",
