@@ -29,6 +29,20 @@
           ]
         }
       ]
+    },
+    "archivingtraffics": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "moveTraffics",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "auth": {
@@ -41,6 +55,11 @@
   },
   "function": {
     "shortenURL": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "moveTraffics": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"

@@ -74,3 +74,12 @@ type CurrentPages @model {
   hash: String!
   pageNumber: Int!
 }
+
+type TrafficsArchive @model {
+    id: ID!
+    studentId: String!
+    affiliation: String!
+    hash: String!
+    pageNumber: Int!
+    state: String!
+}

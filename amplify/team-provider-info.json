@@ -19,6 +19,10 @@
         "shortenURL": {
           "deploymentBucketName": "amplify-amplifycfb9651349534-staging-113543-deployment",
           "s3Key": "amplify-builds/shortenURL-5167666353356567646d-build.zip"
+        },
+        "moveTraffics": {
+          "deploymentBucketName": "amplify-amplifycfb9651349534-staging-113543-deployment",
+          "s3Key": "amplify-builds/moveTraffics-58616a4e446f4f646a70-build.zip"
         }
       }
     }

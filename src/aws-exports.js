@@ -12,6 +12,11 @@ const awsmobile = {
             "name": "utils",
             "endpoint": "https://uh8fzwbonk.execute-api.ap-northeast-2.amazonaws.com/staging",
             "region": "ap-northeast-2"
+        },
+        {
+            "name": "archivingtraffics",
+            "endpoint": "https://cclta74s4i.execute-api.ap-northeast-2.amazonaws.com/staging",
+            "region": "ap-northeast-2"
         }
     ],
     "aws_cognito_identity_pool_id": "ap-northeast-2:107f6fc3-0c46-4aec-8141-b568808a4de8",
