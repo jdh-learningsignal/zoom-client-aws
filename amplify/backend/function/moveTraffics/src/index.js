@@ -97,7 +97,6 @@ exports.handler = async (event) => {
                         query: print(createTrafficsArchive),
                         variables: {
                             input: {
-                                id: element.id,
                                 studentId: element.studentId,
                                 affiliation: element.affiliation,
                                 hash: element.hash,
