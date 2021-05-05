@@ -16,7 +16,7 @@
         }
       }
     },
-    "shortenURL": {
+    "utils": {
       "service": "API Gateway",
       "providerPlugin": "awscloudformation",
       "dependsOn": [

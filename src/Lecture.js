@@ -44,11 +44,34 @@ const Lecture = () => {
     const [currentReds, setCurrentReds] = useState(0);
     const [currentGreens, setCurrentGreens] = useState(0);
     const [browserWidth, setBrowserWidth] = useState(window.innerWidth);
-    const copyLinkRef = useRef(null);
+    const [shortURL, setShortURL] = useState("");
+    const copyOriginLinkRef = useRef(null);
+    const copyShortLinkRef = useRef(null);
 
-    useEffect(() => {
+    const shortenURL = async (url) => {
+        const apiName = 'utils';
+        const path = '/utils/shortenURL';
+        const myInit = {
+            'queryStringParameters': {
+                'encodeURI': encodeURI(url)
+            }
+        };
+
+        const response = await API.get(apiName, path, myInit);
+
+        if (response.code === "200") {
+            return response.result.url;
+        } else {
+            return url;
+        }
+    };
+    
+    useEffect(async () => {
         fetchFile();
-        setBrowserWidth(window.innerWidth);        
+        setBrowserWidth(window.innerWidth);
+        const fURL = `${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`;
+        const sURL = await shortenURL("www.naver.com");
+        setShortURL(sURL);
     }, []);
 
     const fetchFile = async () => {
@@ -199,14 +222,6 @@ const Lecture = () => {
         setCurrentReds(0);
     };
 
-    function getData() {
-        const apiName = "shortenURL";
-        const path = "/items";
-        const init = {};
-
-        return API.get(apiName, path, init);
-    }
-
     const onNextPage = async () => {
         if (pageNumber >= numPages) return;
 
@@ -281,9 +296,16 @@ const Lecture = () => {
         setCurrentReds(redNumber);
     };
 
-    const onCopyLink = e => {
-        copyLinkRef.current.select();
-        copyLinkRef.current.setSelectionRange(0, 99999);
+    const onCopyShortLink = (e) => {
+        copyShortLinkRef.current.select();
+        copyShortLinkRef.current.setSelectionRange(0, 99999);
+
+        document.execCommand("copy");
+    };
+
+    const onCopyOriginLink = (e) => {
+        copyOriginLinkRef.current.select();
+        copyOriginLinkRef.current.setSelectionRange(0, 99999);
 
         document.execCommand("copy");
     };
@@ -445,18 +467,39 @@ const Lecture = () => {
                             }}
                         />
                         <Button
-                            onClick={onCopyLink}
+                            onClick={onCopyShortLink}
                             variant="primary"
                             style={{
-                                right: "5%",
-                                bottom: "17%",
+                                right: "11.5%",
+                                bottom: "16.1%",
                                 position: "fixed",
                             }}
                         >
-                            강의실 링크 복사
+                            강의실 링크 복사 (단축)
                         </Button>{" "}
                         <input
-                            ref={copyLinkRef}
+                            ref={copyShortLinkRef}
+                            value={shortURL}
+                            style={{
+                                width: "119px",
+                                right: "5%",
+                                bottom: "16.3%",
+                                position: "fixed",
+                            }}
+                        ></input>
+                        <Button
+                            onClick={onCopyOriginLink}
+                            variant="primary"
+                            style={{
+                                right: "11.5%",
+                                bottom: "12.1%",
+                                position: "fixed",
+                            }}
+                        >
+                            강의실 링크 복사 (원본)
+                        </Button>{" "}
+                        <input
+                            ref={copyOriginLinkRef}
                             value={`${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`}
                             style={{
                                 width: "119px",

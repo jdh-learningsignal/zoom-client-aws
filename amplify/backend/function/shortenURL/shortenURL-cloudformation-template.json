@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "zoomclientawsLambdaRole19debbb8",
+            "zoomclientawsLambdaRole373f93c3",
             {
               "Fn::Join": [
                 "",
                 [
-                  "zoomclientawsLambdaRole19debbb8",
+                  "zoomclientawsLambdaRole373f93c3",
                   "-",
                   {
                     "Ref": "env"

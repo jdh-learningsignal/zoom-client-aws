@@ -9,8 +9,8 @@ const awsmobile = {
     "aws_appsync_apiKey": "da2-j5ymrnchmjaxhesdhnqpddx3y4",
     "aws_cloud_logic_custom": [
         {
-            "name": "shortenURL",
-            "endpoint": "https://wugidayw80.execute-api.ap-northeast-2.amazonaws.com/staging",
+            "name": "utils",
+            "endpoint": "https://uh8fzwbonk.execute-api.ap-northeast-2.amazonaws.com/staging",
             "region": "ap-northeast-2"
         }
     ],

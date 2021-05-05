@@ -1,16 +1,16 @@
 {
     "paths": [
         {
-            "name": "/items",
+            "name": "/utils",
             "lambdaFunction": "shortenURL",
             "privacy": {
                 "open": true
             },
-            "policyResourceName": "/items"
+            "policyResourceName": "/utils"
         }
     ],
-    "resourceName": "shortenURL",
-    "apiName": "shortenURL",
+    "resourceName": "utils",
+    "apiName": "utils",
     "functionArns": [
         {
             "lambdaFunction": "shortenURL"
