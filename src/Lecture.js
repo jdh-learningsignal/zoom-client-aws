@@ -124,41 +124,73 @@ const Lecture = () => {
         return items;
     };
 
-    const fetchTraffics = async () => {
+    const fetchTraffics = async (direction) => {
         const items = await listApiData(hash);
 
         if (items.length === 0) return;
-        
-        const maxPageNumber = Math.max(...items.map((value) => value.pageNumber));
+
+        const maxPageNumber = Math.max(
+            ...items.map((value) => value.pageNumber)
+        );
 
         const traffics = [];
-        for (let i = 1; i <= maxPageNumber; i++) traffics.push([i, 0, 0]);        
+        for (let i = 1; i <= maxPageNumber; i++) traffics.push([i, 0, 0]);
 
         items.sort(sortItems);
 
         let set = new Set();
-        items.forEach(value => {
-            if (!set.has(value.affiliation + "," + value.studentId + "," + value.pageNumber)) {
-                if (value.state === 'GREEN') {
-                    traffics[value.pageNumber - 1][1] = traffics[value.pageNumber - 1][1] + 1;
+        items.forEach((value) => {
+            if (
+                !set.has(
+                    value.affiliation +
+                        "," +
+                        value.studentId +
+                        "," +
+                        value.pageNumber
+                )
+            ) {
+                if (value.state === "GREEN") {
+                    traffics[value.pageNumber - 1][1] =
+                        traffics[value.pageNumber - 1][1] + 1;
                 } else {
-                    traffics[value.pageNumber - 1][2] = traffics[value.pageNumber - 1][2] + 1; 
-                } 
+                    traffics[value.pageNumber - 1][2] =
+                        traffics[value.pageNumber - 1][2] + 1;
+                }
 
-                set.add(value.affiliation + "," + value.studentId + "," + value.pageNumber);
+                set.add(
+                    value.affiliation +
+                        "," +
+                        value.studentId +
+                        "," +
+                        value.pageNumber
+                );
             }
         });
-        
+
         setTraffics([...traffics]);
 
-        setTotalGreens([...traffics].map(value => value[1]).reduce((accumulator, value) => accumulator + value));
-        setTotalReds([...traffics].map(value => value[2]).reduce((accumulator, value) => accumulator + value));
+        setTotalGreens(
+            [...traffics]
+                .map((value) => value[1])
+                .reduce((accumulator, value) => accumulator + value)
+        );
+        setTotalReds(
+            [...traffics]
+                .map((value) => value[2])
+                .reduce((accumulator, value) => accumulator + value)
+        );
 
-        setPrevGreens([...traffics].map(value => value[1])[pageNumber - 1]);
-        setPrevReds([...traffics].map(value => value[2])[pageNumber - 1]);
+        let curPage = pageNumber;
+        if (direction === "NEXT") curPage = curPage + 1;
+        else curPage = curPage - 1;
+        
+        setPrevGreens([...traffics].map((value) => value[1])[curPage - 2]);
+        setPrevReds([...traffics].map((value) => value[2])[curPage - 2]);
 
-        setPrevCurrentGreens([...traffics].map(value => value[1])[pageNumber]);
-        setPrevCurrentReds([...traffics].map(value => value[2])[pageNumber]);
+        setPrevCurrentGreens(
+            [...traffics].map((value) => value[1])[curPage - 1]
+        );
+        setPrevCurrentReds([...traffics].map((value) => value[2])[curPage - 1]);
 
         setCurrentGreens(0);
         setCurrentReds(0);
@@ -172,27 +204,48 @@ const Lecture = () => {
               input: {
                   hash: hash, 
                   numPages: numPages,
-                  pageNumber: 1
+                  pageNumber: pageNumber
                 }
             }
-        });
+        }); 
+        
+        try {
+            const apiData = await API.graphql({ 
+                query: getCurrentPages,
+                variables: {
+                    id: hash
+                }
+            });
 
-        await API.graphql({ 
-            query: createCurrentPagesMutation, 
-            variables: { 
-              input: {
-                  id: hash,
-                  hash: hash,
-                  pageNumber: 1
-                }
+            if (apiData.data) {
+                await API.graphql({ 
+                    query: updateCurrentPagesMutation, 
+                    variables: { 
+                      input: {
+                          id: hash,
+                          pageNumber: pageNumber
+                        }
+                    }
+                });
             }
-        });
+        } catch (e) {
+            await API.graphql({ 
+                query: createCurrentPagesMutation, 
+                variables: { 
+                  input: {
+                      id: hash,
+                      hash: hash,
+                      pageNumber: pageNumber
+                    }
+                }
+            });
+        }
     };
+    
 
     const onPrevPage = async () => {
         if (pageNumber <= 1) return;
         const temp = pageNumber;
-        setPageNumber(temp - 1);
 
         if (!hash || !numPages || !temp) return;
         await API.graphql({ 
@@ -216,23 +269,18 @@ const Lecture = () => {
             }
         });
 
-        setPrevGreens([...traffics].map(value => value[1])[pageNumber - 3]);
-        setPrevReds([...traffics].map(value => value[2])[pageNumber - 3]);
+        setPageNumber(temp - 1);
 
-        setPrevCurrentGreens([...traffics].map(value => value[1])[pageNumber - 2]);
-        setPrevCurrentReds([...traffics].map(value => value[2])[pageNumber - 2]);
-        
-        setCurrentGreens(0);
-        setCurrentReds(0);
+        await fetchTraffics("PREV");
     };
 
     const onNextPage = async () => {
         if (pageNumber >= numPages) return;
 
         const temp = pageNumber;
-        setPageNumber(temp + 1);
 
         if (!hash || !numPages || !temp) return;
+
         await API.graphql({
             query: createPagesMutation,
             variables: {
@@ -254,7 +302,9 @@ const Lecture = () => {
             },
         });
 
-        fetchTraffics();
+        setPageNumber(temp + 1);
+
+        await fetchTraffics("NEXT");
     };
 
     const sortItems = (a, b) => {
