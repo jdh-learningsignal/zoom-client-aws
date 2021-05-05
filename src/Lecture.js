@@ -70,7 +70,7 @@ const Lecture = () => {
         fetchFile();
         setBrowserWidth(window.innerWidth);
         const fURL = `${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`;
-        const sURL = await shortenURL("www.naver.com");
+        const sURL = await shortenURL(fURL);
         setShortURL(sURL);
     }, []);
 
