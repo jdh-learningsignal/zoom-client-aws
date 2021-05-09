@@ -5,6 +5,7 @@ import Zoom from './Zoom';
 import Upload from './Upload';
 import Lecture from './Lecture';
 import Archive from "./Archive";
+import Analytics from "./Analytics";
 import { AdminProvider } from './contexts/admin';
 
 import './App.css';
@@ -18,6 +19,7 @@ const App = () => {
               <Route path="/admin" component={Upload} />
               <Route path="/archive" component={Archive} />
               <Route path="/lecture/:hash" component={Lecture} />
+              <Route path="/analytics" component={Analytics} />
           </Fragment>
       </AdminProvider>
   );
