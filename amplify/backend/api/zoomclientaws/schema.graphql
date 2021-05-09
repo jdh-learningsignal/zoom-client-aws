@@ -83,3 +83,14 @@ type TrafficsArchive @model {
     pageNumber: Int!
     state: String!
 }
+
+type TrafficsArchives @model {
+    id: ID!
+    studentId: String!
+    affiliation: String!
+    hash: String!
+    pageNumber: Int!
+    state: String!
+    originId: String!
+    originCreatedAt: String!
+}

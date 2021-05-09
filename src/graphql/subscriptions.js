@@ -367,3 +367,93 @@ export const onDeleteCurrentPages = /* GraphQL */ `
     }
   }
 `;
+export const onCreateTrafficsArchive = /* GraphQL */ `
+  subscription OnCreateTrafficsArchive {
+    onCreateTrafficsArchive {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrafficsArchive = /* GraphQL */ `
+  subscription OnUpdateTrafficsArchive {
+    onUpdateTrafficsArchive {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTrafficsArchive = /* GraphQL */ `
+  subscription OnDeleteTrafficsArchive {
+    onDeleteTrafficsArchive {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateTrafficsArchives = /* GraphQL */ `
+  subscription OnCreateTrafficsArchives {
+    onCreateTrafficsArchives {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      originId
+      originCreatedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTrafficsArchives = /* GraphQL */ `
+  subscription OnUpdateTrafficsArchives {
+    onUpdateTrafficsArchives {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      originId
+      originCreatedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTrafficsArchives = /* GraphQL */ `
+  subscription OnDeleteTrafficsArchives {
+    onDeleteTrafficsArchives {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      originId
+      originCreatedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;

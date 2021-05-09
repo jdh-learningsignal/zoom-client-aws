@@ -22,7 +22,7 @@
         },
         "moveTraffics": {
           "deploymentBucketName": "amplify-amplifycfb9651349534-staging-113543-deployment",
-          "s3Key": "amplify-builds/moveTraffics-58616a4e446f4f646a70-build.zip"
+          "s3Key": "amplify-builds/moveTraffics-6536363935796e54434e-build.zip"
         }
       }
     }

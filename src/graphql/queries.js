@@ -308,3 +308,85 @@ export const listCurrentPagess = /* GraphQL */ `
     }
   }
 `;
+export const getTrafficsArchive = /* GraphQL */ `
+  query GetTrafficsArchive($id: ID!) {
+    getTrafficsArchive(id: $id) {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTrafficsArchives = /* GraphQL */ `
+  query ListTrafficsArchives(
+    $filter: ModelTrafficsArchiveFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrafficsArchives(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        studentId
+        affiliation
+        hash
+        pageNumber
+        state
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getTrafficsArchives = /* GraphQL */ `
+  query GetTrafficsArchives($id: ID!) {
+    getTrafficsArchives(id: $id) {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      originId
+      originCreatedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listTrafficsArchivess = /* GraphQL */ `
+  query ListTrafficsArchivess(
+    $filter: ModelTrafficsArchivesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTrafficsArchivess(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        studentId
+        affiliation
+        hash
+        pageNumber
+        state
+        originId
+        originCreatedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

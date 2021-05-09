@@ -448,3 +448,111 @@ export const deleteCurrentPages = /* GraphQL */ `
     }
   }
 `;
+export const createTrafficsArchive = /* GraphQL */ `
+  mutation CreateTrafficsArchive(
+    $input: CreateTrafficsArchiveInput!
+    $condition: ModelTrafficsArchiveConditionInput
+  ) {
+    createTrafficsArchive(input: $input, condition: $condition) {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTrafficsArchive = /* GraphQL */ `
+  mutation UpdateTrafficsArchive(
+    $input: UpdateTrafficsArchiveInput!
+    $condition: ModelTrafficsArchiveConditionInput
+  ) {
+    updateTrafficsArchive(input: $input, condition: $condition) {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTrafficsArchive = /* GraphQL */ `
+  mutation DeleteTrafficsArchive(
+    $input: DeleteTrafficsArchiveInput!
+    $condition: ModelTrafficsArchiveConditionInput
+  ) {
+    deleteTrafficsArchive(input: $input, condition: $condition) {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createTrafficsArchives = /* GraphQL */ `
+  mutation CreateTrafficsArchives(
+    $input: CreateTrafficsArchivesInput!
+    $condition: ModelTrafficsArchivesConditionInput
+  ) {
+    createTrafficsArchives(input: $input, condition: $condition) {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      originId
+      originCreatedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateTrafficsArchives = /* GraphQL */ `
+  mutation UpdateTrafficsArchives(
+    $input: UpdateTrafficsArchivesInput!
+    $condition: ModelTrafficsArchivesConditionInput
+  ) {
+    updateTrafficsArchives(input: $input, condition: $condition) {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      originId
+      originCreatedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteTrafficsArchives = /* GraphQL */ `
+  mutation DeleteTrafficsArchives(
+    $input: DeleteTrafficsArchivesInput!
+    $condition: ModelTrafficsArchivesConditionInput
+  ) {
+    deleteTrafficsArchives(input: $input, condition: $condition) {
+      id
+      studentId
+      affiliation
+      hash
+      pageNumber
+      state
+      originId
+      originCreatedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;

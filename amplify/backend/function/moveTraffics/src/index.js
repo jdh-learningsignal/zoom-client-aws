@@ -29,15 +29,17 @@ const listTrafficss = gql`
     }
 `;
 
-const createTrafficsArchive = gql`
-    mutation createTrafficsArchive($input: CreateTrafficsArchiveInput!) {
-        createTrafficsArchive(input: $input) {
+const createTrafficsArchives = gql`
+    mutation createTrafficsArchives($input: CreateTrafficsArchivesInput!) {
+        createTrafficsArchives(input: $input) {
             id
             studentId
             affiliation
             hash
             pageNumber
             state
+            originId
+            originCreatedAt
             createdAt
             updatedAt
         }
@@ -86,6 +88,8 @@ exports.handler = async (event) => {
         }
 
         try {
+            console.log("items: ", items);
+
             items.forEach(async (element) => {
                 const result = await axios({
                     url: API_URL,
@@ -94,7 +98,7 @@ exports.handler = async (event) => {
                         "x-api-key": API_KEY,
                     },
                     data: {
-                        query: print(createTrafficsArchive),
+                        query: print(createTrafficsArchives),
                         variables: {
                             input: {
                                 studentId: element.studentId,
@@ -102,11 +106,12 @@ exports.handler = async (event) => {
                                 hash: element.hash,
                                 pageNumber: element.pageNumber,
                                 state: element.state,
+                                originId: element.id,
+                                originCreatedAt: element.createdAt,
                             },
                         },
                     },
                 });
-
                 console.log(result);
             });
         } catch (err) {
@@ -115,6 +120,7 @@ exports.handler = async (event) => {
 
         const body = {
             message: "successfully created traffics!",
+            items: items,
         };
 
         return {
