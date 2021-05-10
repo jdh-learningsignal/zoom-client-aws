@@ -14,6 +14,26 @@ import {
 } from "./graphql/queries";
 
 const Analytics = () => {
+    // - 참여 학생 수 (전체): totalStudentNum
+    // - 참여 학생 수 (일별): dayStudentNum
+
+    // - 신호등 사용 가능한 (크롬 & 데스크톱을 사용) 참여  학생 수 (전체): totalPossibleStudentNum
+    // - 신호등 사용 가능한 (크롬 & 데스크톱을 사용) 참여 학생 수 (일별): dayPossibleStudentNum
+
+    // - 신호등을 한 번이라도 사용한 학생들의 수 (전체): totalClickedStudentNum
+    // - 신호등을 한 번이라도 사용한 학생들의 수 (일별): dayClickedStudentNum
+
+    // - 평균 슬라이드 수 (전체): meanSlideNum
+    // - 슬라이드 수 (일별): daySlideNum
+
+    // - 총 신호 개수 (중복 허용): duplicatedTotalTrafficsNum
+    // - 총 신호 개수 (중복 제거): totalTrafficsNum
+
+    // - 처음 신호 알겠어요/어려워요 개수 (전체): firstTotalGreens, firstTotalReds
+    // - 최종 신호 알겠어요/어려워요 개수 (전체): finalTotalGreens, finalTotalReds
+    // - 처음 신호 알겠어요/어려워요 개수 (일별): firstDayGreens, firstDayReds
+    // - 처음 신호 알겠어요/어려워요 개수 (일별): finalDayGreens, finalDayReds
+
     const [totalStudentNum, setTotalStudentNum] = useState(0);
     const [dayStudentNum, setDayStudentNum] = useState([[], []]);
     const [totalPossibleStudentNum, setTotalPossibleStudentNum] = useState(0);
@@ -883,216 +903,46 @@ const Analytics = () => {
 
     return (
         <Container fluid>
-            <Row>
-                <h1>참여 학생 수 (전체): {totalStudentNum}</h1>
-                <h1>참여 학생 수 (일별): {dayStudentNum[1].join(", ")}</h1>
-                <h1>
-                    신호등 사용 가능한 (크롬 & 데스크톱을 사용) 참여 학생 수
-                    (전체): {totalPossibleStudentNum}
-                </h1>
-                <h1>
-                    신호등 사용 가능한 (크롬 & 데스크톱을 사용) 참여 학생 수
-                    (일별): {dayPossibleStudentNum[1].join(", ")}
-                </h1>
-                <h1>
-                    신호등을 한 번이라도 사용한 학생들의 수 (전체):{" "}
-                    {totalClickedStudentNum}
-                </h1>
-                <h1>
-                    신호등을 한 번이라도 사용한 학생들의 수 (일별):{" "}
-                    {dayClickedStudentNum[1].join(", ")}
-                </h1>
-                <h1>평균 슬라이드 수 (전체): {meanSlideNum}</h1>
-                <h1>슬라이드 수 (일별): {daySlideNum[1].join(", ")}</h1>
-                <h1>총 신호 개수 (중복 허용): {duplicatedTotalTrafficsNum}</h1>
-                <h1>총 신호 개수 (중복 제거): {totalTrafficsNum}</h1>
-                <h1>
-                    처음 신호 레드/그린 개수 (전체): 그린: {firstTotalGreens} /
-                    레드: {firstTotalReds}
-                </h1>
-                <h1>
-                    최종 신호 레드/그린 개수 (전체): 그린: {finalTotalGreens} /
-                    레드: {finalTotalReds}
-                </h1>
-                <h1>
-                    처음 신호 레드/그린 개수 (일별): 그린:{" "}
-                    {firstDayGreens[1].join(", ")} / 레드:{" "}
-                    {firstDayReds[1].join(", ")}
-                </h1>
-                <h1>
-                    최종 신호 레드/그린 개수 (일별): 그린:{" "}
-                    {finalDayGreens[1].join(", ")} / 레드:{" "}
-                    {finalDayReds[1].join(", ")}
-                </h1>
-                {/* <h1>
-                    첫 슬라이드에서의 슬라이드마다 신호등 클릭 수 그래프 (일별)
-                    <Chart
-                        key={fakeKey}
-                        width={300}
-                        chartType="LineChart"
-                        loader={<div>Loading...</div>}
-                        data={[["x", "알겠어요", "어려워요"], ...traffics]}
-                        options={{
-                            hAxis: {
-                                title: "페이지",
-                            },
-                            vAxis: {
-                                title: "페이지 별 응답 변화 추이",
-                            },
-                        }}
-                    />
-                </h1>
-                <h1>최종 변화한 슬라이드에서의 그래프 (일별)</h1> */}
-                {/* <h1>
-                            첫 슬라이드에서의 슬라이드마다 신호등 클릭 수 그래프
-                            (일별): {firstTotalTraffics}
-                        </h1>
-                        <h1>
-                            최종 변화한 슬라이드에서의 그래프 (일별):{" "}
-                            {finalTotalTraffics}
-                        </h1> */}
-                {/* <Col sm={3}>
-                        <Chart
-                            key={fakeKey}
-                            style={{
-                                position: "fixed",
-                                right: "0%",
-                                top: "0%",
-                                zIndex: 2,
-                            }}
-                            width={browserWidth * 0.16}
-                            chartType="PieChart"
-                            loader={<div>Loading...</div>}
-                            data={[
-                                ["응답", "횟수"],
-                                ["알겠어요", totalGreens],
-                                ["어려워요", totalReds],
-                            ]}
-                            options={{
-                                title: "총 응답",
-                            }}
-                        />
-                        <Chart
-                            key={fakeKey}
-                            style={{
-                                position: "fixed",
-                                right: "13%",
-                                top: "0%",
-                                zIndex: 1,
-                            }}
-                            width={browserWidth * 0.16}
-                            chartType="PieChart"
-                            loader={<div>Loading...</div>}
-                            data={[
-                                ["응답", "횟수"],
-                                ["알겠어요", prevGreens],
-                                ["어려워요", prevReds],
-                            ]}
-                            options={{
-                                title: "이전 페이지의 응답",
-                            }}
-                        />
-                        <Chart
-                            key={fakeKey}
-                            style={{
-                                position: "fixed",
-                                right: "13%",
-                                top: "24%",
-                                zIndex: 3,
-                            }}
-                            width={browserWidth * 0.16}
-                            chartType="PieChart"
-                            loader={<div>Loading...</div>}
-                            data={[
-                                ["응답", "횟수"],
-                                ["알겠어요", prevCurrentGreens],
-                                ["어려워요", prevCurrentReds],
-                            ]}
-                            options={{
-                                title: "현재 페이지의 과거 응답",
-                            }}
-                        />
-                        <Chart
-                            key={fakeKey}
-                            style={{
-                                position: "fixed",
-                                right: "0%",
-                                top: "24%",
-                                zIndex: 4,
-                            }}
-                            width={browserWidth * 0.16}
-                            chartType="PieChart"
-                            loader={<div>Loading...</div>}
-                            data={[
-                                ["응답", "횟수"],
-                                ["알겠어요", currentGreens],
-                                ["어려워요", currentReds],
-                            ]}
-                            options={{
-                                title: "현재 페이지의 실시간 응답",
-                            }}
-                        />
-                        <Button
-                            onClick={onFetchCurrentTraffics}
-                            variant="primary"
-                            style={{
-                                right: "1%",
-                                top: "38%",
-                                position: "fixed",
-                                zIndex: 6,
-                            }}
-                        >
-                            확인
-                        </Button>
-                        <Chart
-                            key={fakeKey}
-                            style={{
-                                position: "fixed",
-                                right: "0%",
-                                top: "45%",
-                                zIndex: 5,
-                            }}
-                            width={browserWidth * 0.29}
-                            chartType="LineChart"
-                            loader={<div>Loading...</div>}
-                            data={[["x", "알겠어요", "어려워요"], ...traffics]}
-                            options={{
-                                hAxis: {
-                                    title: "페이지",
-                                },
-                                vAxis: {
-                                    title: "페이지 별 응답 변화 추이",
-                                },
-                            }}
-                        />
-                        <Link
-                            to={`/admin`}
-                            style={{
-                                marginTop: "50px",
-                                backgroundColor: "grey",
-                                color: "#ffffff",
-                                textDecoration: "none",
-                                paddingTop: "10px",
-                                paddingBottom: "10px",
-                                paddingLeft: "10px",
-                                paddingRight: "10px",
-                                borderRadius: "10px",
-                                cursor: "pointer",
-                                border: "none",
-                                outline: "none",
-                                textAlign: "center",
-                                width: "8%",
-                                margin: "auto",
-                                right: "5%",
-                                bottom: "5%",
-                                position: "fixed",
-                                textAlign: "center",
-                            }}
-                        >
-                            종료
-                        </Link>
-                    </Col> */}
-            </Row>
+            <h1>참여 학생 수 (전체): {totalStudentNum}</h1>
+            <h1>참여 학생 수 (일별): {dayStudentNum[1].join(", ")}</h1>
+            <h1>
+                신호등 사용 가능한 (크롬 & 데스크톱을 사용) 참여 학생 수 (전체):{" "}
+                {totalPossibleStudentNum}
+            </h1>
+            <h1>
+                신호등 사용 가능한 (크롬 & 데스크톱을 사용) 참여 학생 수 (일별):{" "}
+                {dayPossibleStudentNum[1].join(", ")}
+            </h1>
+            <h1>
+                신호등을 한 번이라도 사용한 학생들의 수 (전체):{" "}
+                {totalClickedStudentNum}
+            </h1>
+            <h1>
+                신호등을 한 번이라도 사용한 학생들의 수 (일별):{" "}
+                {dayClickedStudentNum[1].join(", ")}
+            </h1>
+            <h1>평균 슬라이드 수 (전체): {meanSlideNum}</h1>
+            <h1>슬라이드 수 (일별): {daySlideNum[1].join(", ")}</h1>
+            <h1>총 신호 개수 (중복 허용): {duplicatedTotalTrafficsNum}</h1>
+            <h1>총 신호 개수 (중복 제거): {totalTrafficsNum}</h1>
+            <h1>
+                처음 신호 알겠어요/어려워요 개수 (전체): 알겠어요:{" "}
+                {firstTotalGreens} / 어려워요: {firstTotalReds}
+            </h1>
+            <h1>
+                최종 신호 알겠어요/어려워요 개수 (전체): 알겠어요:{" "}
+                {finalTotalGreens} / 어려워요: {finalTotalReds}
+            </h1>
+            <h1>
+                처음 신호 알겠어요/어려워요 개수 (일별): 알겠어요:{" "}
+                {firstDayGreens[1].join(", ")} / 어려워요:{" "}
+                {firstDayReds[1].join(", ")}
+            </h1>
+            <h1>
+                최종 신호 알겠어요/어려워요 개수 (일별): 알겠어요:{" "}
+                {finalDayGreens[1].join(", ")} / 어려워요:{" "}
+                {finalDayReds[1].join(", ")}
+            </h1>
         </Container>
     );
 };
