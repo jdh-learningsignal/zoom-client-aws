@@ -829,10 +829,27 @@ const Analytics = () => {
             if (!nextToken) break;
         }
 
-        console.log("listTrafficsArchivessData: ");
-        console.log(items);
+        const results = [...items].map((value) => {
+            const result = {
+                affiliation: value.affiliation,
+                createdAt: value.createdAt,
+                hash: value.hash,
+                id: value.id,
+                pageNumber: value.pageNumber,
+                state: value.state,
+                studentId: value.studentId,
+                updatedAt: value.updatedAt,
+                originCreatedAt: new Date(value.originCreatedAt),
+                originId: value.originId,
+            };
 
-        return items;
+            return result;
+        });
+
+        console.log("listTrafficsArchivessData: ");
+        console.log(results);
+
+        return results;
     };
 
     const listAttendancessData = async () => {
