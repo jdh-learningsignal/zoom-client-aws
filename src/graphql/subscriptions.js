@@ -334,34 +334,46 @@ export const onDeleteAttendances = /* GraphQL */ `
     }
   }
 `;
-export const onCreateCurrentPages = /* GraphQL */ `
-  subscription OnCreateCurrentPages {
-    onCreateCurrentPages {
+export const onCreateCurrentLectures = /* GraphQL */ `
+  subscription OnCreateCurrentLectures {
+    onCreateCurrentLectures {
       id
       hash
       pageNumber
+      affiliation
+      name
+      profName
+      meetingId
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateCurrentPages = /* GraphQL */ `
-  subscription OnUpdateCurrentPages {
-    onUpdateCurrentPages {
+export const onUpdateCurrentLectures = /* GraphQL */ `
+  subscription OnUpdateCurrentLectures {
+    onUpdateCurrentLectures {
       id
       hash
       pageNumber
+      affiliation
+      name
+      profName
+      meetingId
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteCurrentPages = /* GraphQL */ `
-  subscription OnDeleteCurrentPages {
-    onDeleteCurrentPages {
+export const onDeleteCurrentLectures = /* GraphQL */ `
+  subscription OnDeleteCurrentLectures {
+    onDeleteCurrentLectures {
       id
       hash
       pageNumber
+      affiliation
+      name
+      profName
+      meetingId
       createdAt
       updatedAt
     }

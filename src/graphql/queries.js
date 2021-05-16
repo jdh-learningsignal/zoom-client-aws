@@ -279,28 +279,40 @@ export const listAttendancess = /* GraphQL */ `
     }
   }
 `;
-export const getCurrentPages = /* GraphQL */ `
-  query GetCurrentPages($id: ID!) {
-    getCurrentPages(id: $id) {
+export const getCurrentLectures = /* GraphQL */ `
+  query GetCurrentLectures($id: ID!) {
+    getCurrentLectures(id: $id) {
       id
       hash
       pageNumber
+      affiliation
+      name
+      profName
+      meetingId
       createdAt
       updatedAt
     }
   }
 `;
-export const listCurrentPagess = /* GraphQL */ `
-  query ListCurrentPagess(
-    $filter: ModelCurrentPagesFilterInput
+export const listCurrentLecturess = /* GraphQL */ `
+  query ListCurrentLecturess(
+    $filter: ModelCurrentLecturesFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listCurrentPagess(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listCurrentLecturess(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
         hash
         pageNumber
+        affiliation
+        name
+        profName
+        meetingId
         createdAt
         updatedAt
       }

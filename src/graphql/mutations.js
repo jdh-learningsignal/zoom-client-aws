@@ -406,43 +406,55 @@ export const deleteAttendances = /* GraphQL */ `
     }
   }
 `;
-export const createCurrentPages = /* GraphQL */ `
-  mutation CreateCurrentPages(
-    $input: CreateCurrentPagesInput!
-    $condition: ModelCurrentPagesConditionInput
+export const createCurrentLectures = /* GraphQL */ `
+  mutation CreateCurrentLectures(
+    $input: CreateCurrentLecturesInput!
+    $condition: ModelCurrentLecturesConditionInput
   ) {
-    createCurrentPages(input: $input, condition: $condition) {
+    createCurrentLectures(input: $input, condition: $condition) {
       id
       hash
       pageNumber
+      affiliation
+      name
+      profName
+      meetingId
       createdAt
       updatedAt
     }
   }
 `;
-export const updateCurrentPages = /* GraphQL */ `
-  mutation UpdateCurrentPages(
-    $input: UpdateCurrentPagesInput!
-    $condition: ModelCurrentPagesConditionInput
+export const updateCurrentLectures = /* GraphQL */ `
+  mutation UpdateCurrentLectures(
+    $input: UpdateCurrentLecturesInput!
+    $condition: ModelCurrentLecturesConditionInput
   ) {
-    updateCurrentPages(input: $input, condition: $condition) {
+    updateCurrentLectures(input: $input, condition: $condition) {
       id
       hash
       pageNumber
+      affiliation
+      name
+      profName
+      meetingId
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteCurrentPages = /* GraphQL */ `
-  mutation DeleteCurrentPages(
-    $input: DeleteCurrentPagesInput!
-    $condition: ModelCurrentPagesConditionInput
+export const deleteCurrentLectures = /* GraphQL */ `
+  mutation DeleteCurrentLectures(
+    $input: DeleteCurrentLecturesInput!
+    $condition: ModelCurrentLecturesConditionInput
   ) {
-    deleteCurrentPages(input: $input, condition: $condition) {
+    deleteCurrentLectures(input: $input, condition: $condition) {
       id
       hash
       pageNumber
+      affiliation
+      name
+      profName
+      meetingId
       createdAt
       updatedAt
     }

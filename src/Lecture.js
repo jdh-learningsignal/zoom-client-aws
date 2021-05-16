@@ -1,35 +1,33 @@
-import { React, useState, useEffect, useContext, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import jwt from 'jsonwebtoken';
-import { useParams } from 'react-router-dom';
-import './Lecture.css';
-import { API, Storage } from 'aws-amplify';
-import { withAuthenticator } from '@aws-amplify/ui-react'
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+import { React, useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import jwt from "jsonwebtoken";
+import { useParams } from "react-router-dom";
+import "./Lecture.css";
+import { API, Storage } from "aws-amplify";
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { Chart } from "react-google-charts";
-import { Container, Col, Row } from 'react-bootstrap';
-import { 
-    createPages as createPagesMutation, 
-    createCurrentPages as createCurrentPagesMutation,
-    updateCurrentPages as updateCurrentPagesMutation
-} from './graphql/mutations';
-import { listTrafficss, getCurrentPages } from './graphql/queries';
-import config from './config';
-
-import AdminContext from './contexts/admin';
+import { Container, Col, Row } from "react-bootstrap";
+import {
+    createPages as createPagesMutation,
+    createCurrentLectures as createCurrentLecturesMutation,
+    updateCurrentLectures as updateCurrentLecturesMutation,
+} from "./graphql/mutations";
+import { listTrafficss, getCurrentLectures } from "./graphql/queries";
+import config from "./config";
 
 const url = window.location.origin;
 
 const payload = {
     iss: config.apiKey,
-    exp: ((new Date()).getTime() + 5000)
+    exp: new Date().getTime() + 5000,
 };
 
 const token = jwt.sign(payload, config.apiSecret);
 
 const Lecture = () => {
-    const context = useContext(AdminContext);
     const { hash } = useParams();
     const [file, setFile] = useState("");
     const [numPages, setNumPages] = useState(null);
@@ -45,11 +43,18 @@ const Lecture = () => {
     const [currentGreens, setCurrentGreens] = useState(0);
     const [browserWidth, setBrowserWidth] = useState(window.innerWidth);
     const [fakeKey, setFakeKey] = useState(false);
+
+    const query = new URLSearchParams(useLocation().search);
+    const affiliation = query.get("a");
+    const lectureName = query.get("l");
+    const profName = query.get("n");
+    const meetingNumber = query.get("m");
+
     const [fURL, setFURL] = useState(
-        `${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`
+        `${url}/attendance?m=${meetingNumber}&h=${hash}`
     );
     const [sURL, setSURL] = useState(
-        `${url}?m=${context.state.meetingNumber}&p=${context.state.passWord}&h=${hash}`
+        `${url}/attendance?m=${meetingNumber}&h=${hash}`
     );
 
     const copyOriginLinkRef = useRef(null);
@@ -220,7 +225,7 @@ const Lecture = () => {
 
         try {
             const apiData = await API.graphql({
-                query: getCurrentPages,
+                query: getCurrentLectures,
                 variables: {
                     id: hash,
                 },
@@ -228,7 +233,7 @@ const Lecture = () => {
 
             if (apiData.data) {
                 await API.graphql({
-                    query: updateCurrentPagesMutation,
+                    query: updateCurrentLecturesMutation,
                     variables: {
                         input: {
                             id: hash,
@@ -239,12 +244,16 @@ const Lecture = () => {
             }
         } catch (e) {
             await API.graphql({
-                query: createCurrentPagesMutation,
+                query: createCurrentLecturesMutation,
                 variables: {
                     input: {
                         id: hash,
                         hash: hash,
                         pageNumber: pageNumber,
+                        affiliation: affiliation,
+                        name: lectureName,
+                        profName: profName,
+                        meetingId: meetingNumber,
                     },
                 },
             });
@@ -268,7 +277,7 @@ const Lecture = () => {
         });
 
         await API.graphql({
-            query: updateCurrentPagesMutation,
+            query: updateCurrentLecturesMutation,
             variables: {
                 input: {
                     id: hash,
@@ -301,7 +310,7 @@ const Lecture = () => {
         });
 
         await API.graphql({
-            query: updateCurrentPagesMutation,
+            query: updateCurrentLecturesMutation,
             variables: {
                 input: {
                     id: hash,
@@ -323,13 +332,13 @@ const Lecture = () => {
 
     const onFetchCurrentTraffics = async () => {
         const getApiData = await API.graphql({
-            query: getCurrentPages,
+            query: getCurrentLectures,
             variables: {
                 id: hash,
             },
         });
 
-        const updatedTime = getApiData.data.getCurrentPages.updatedAt;
+        const updatedTime = getApiData.data.getCurrentLectures.updatedAt;
 
         const items = await listApiData(hash);
 

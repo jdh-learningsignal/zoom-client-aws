@@ -69,10 +69,14 @@ type Attendances @model {
   device: String!
 }
 
-type CurrentPages @model {
-  id: ID!
-  hash: String!
-  pageNumber: Int!
+type CurrentLectures @model {
+    id: ID!
+    hash: String!
+    pageNumber: Int!
+    affiliation: String!
+    name: String!
+    profName: String!
+    meetingId: String!
 }
 
 type TrafficsArchive @model {
