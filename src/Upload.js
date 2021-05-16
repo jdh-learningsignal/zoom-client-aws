@@ -25,6 +25,8 @@ const Upload = () => {
     const [material, setMaterial] = useState({ name: "강의 자료 업로드 (PDF만 가능)", hash: '' });
     const startButtonRef = useRef(null);
 
+    useEffect(() => {}, []);
+
     const onChangeFile = async (e) => {
         if (!e.target.files[0]) return;
         

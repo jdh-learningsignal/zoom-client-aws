@@ -97,6 +97,9 @@ const Lecture = () => {
         setBrowserWidth(window.innerWidth);
         shortenURL(fURL);
 
+        window.removeEventListener("beforeunload", onUnload);
+        window.addEventListener("beforeunload", onUnload);
+
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
@@ -399,6 +402,20 @@ const Lecture = () => {
         document.execCommand("copy");
     };
 
+    const onUnload = (e) => {
+        e.preventDefault();
+        e.returnValue = "";
+
+        API.graphql({
+            query: deleteCurrentLecturesMutation,
+            variables: {
+                input: {
+                    id: hash,
+                },
+            },
+        });
+    };
+
     const onEndLecture = async () => {
         const result = await API.graphql({
             query: deleteCurrentLecturesMutation,
@@ -409,7 +426,7 @@ const Lecture = () => {
             },
         });
 
-        console.log(result);
+        window.removeEventListener("beforeunload", onUnload);
 
         return history.push('/admin');
     };
