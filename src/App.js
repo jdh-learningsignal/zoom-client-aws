@@ -1,6 +1,7 @@
 import { React, Fragment } from 'react';
 import { Route } from 'react-router-dom';
 
+import Main from "./Main";
 import Class from "./Class";
 import Zoom from './Zoom';
 import Upload from './Upload';
@@ -16,7 +17,8 @@ const App = () => {
   return (
       <AdminProvider>
           <Fragment>
-              <Route exact path="/" component={Class} />
+              <Route exact path="/" component={Main} />
+              <Route path="/class" component={Class} />
               <Route path="/attendance" component={Zoom} />
               <Route path="/admin" component={Upload} />
               <Route path="/archive" component={Archive} />
