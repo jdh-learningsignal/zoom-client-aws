@@ -5,13 +5,13 @@ import {
     ListGroup,
     Container,
     Row,
+    Col,
 } from "react-bootstrap";
 import { API } from "aws-amplify";
 
 import { listCurrentLecturess } from "./graphql/queries";
 
 // import "./Class.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const url = window.location.origin;
 
@@ -84,11 +84,11 @@ const Class = () => {
 
     const LectureCard = ({ lecture }) => {
         const { name, affiliation, profName, meetingId, hash } = lecture;
-
+        
         return (
             <ListGroupItem>
                 <Card.Title>{name}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
+                <Card.Subtitle className="mb-2">
                     {mapAffiliation(affiliation) + " " + profName}
                 </Card.Subtitle>
                 <Card.Link
@@ -102,9 +102,9 @@ const Class = () => {
 
     const LectureList = ({ lectures }) => {
         return (
-            <Card style={{ width: "18rem" }}>
+            <Card style={{ width: "24rem" }}>
                 <Card.Header>현재 참여 가능한 수업</Card.Header>
-                <ListGroup className="list-group-flush">
+                <ListGroup  variant="flush">
                     {lectures.map((lecture) => {
                         return (
                             <LectureCard lecture={lecture} key={lecture.id} />
@@ -116,12 +116,19 @@ const Class = () => {
     };
 
     return (
-        <Container fluid className="text-center">
+        <Container>
             <Row>&nbsp;</Row>
             <Row>&nbsp;</Row>
-            <Row className="justify-content-around">
-                <LectureList lectures={lectures}></LectureList>
+            <Row>
+                <Col></Col>
+                <Col>
+                    <LectureList lectures={lectures}></LectureList>
+                </Col>
+                <Col></Col>
             </Row>
+            <Row>&nbsp;</Row>
+            <Row>&nbsp;</Row>
+            <Row>&nbsp;</Row>
         </Container>
     );
 };

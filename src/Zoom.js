@@ -15,7 +15,7 @@ import crypto from 'crypto';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, InputGroup, FormControl, Form, Row, Col, Button } from 'react-bootstrap';
 
-// import './Zoom.css';
+import "./Zoom.css";
 
 ZoomMtg.setZoomJSLib('https://source.zoom.us/1.9.1/lib', '/av');
 ZoomMtg.preLoadWasm();
@@ -222,11 +222,11 @@ const Zoom = () => {
                     <Col></Col>
                     <Col>
                         <Form.Group>
-                            {/* <Form.Label>학교</Form.Label> */}
-                            <Form.Control 
+                            <Form.Control
                                 onChange={(e) => setAffiliation(e.target.value)}
-                                as="select" 
-                                custom>
+                                as="select"
+                                custom
+                            >
                                 <option value="HYU">한양대학교</option>
                                 <option value="KJWU">광주여자대학교</option>
                                 <option value="LTU">루터대학교</option>
@@ -239,16 +239,14 @@ const Zoom = () => {
                     </Col>
                     <Col></Col>
                 </Row>
-                <Row className="justify-content-around">
+                <Row>
                     <Col></Col>
                     <Col>
                         <InputGroup className="mb-3">
                             <InputGroup.Prepend>
-                                <InputGroup.Text>
-                                    이름
-                                </InputGroup.Text>
+                                <InputGroup.Text>이름</InputGroup.Text>
                             </InputGroup.Prepend>
-                            <FormControl 
+                            <FormControl
                                 onChange={(e) => setUserName(e.target.value)}
                                 placeholder="예) 홍길동"
                             />
@@ -256,16 +254,14 @@ const Zoom = () => {
                     </Col>
                     <Col></Col>
                 </Row>
-                <Row className="justify-content-around">
+                <Row>
                     <Col></Col>
                     <Col>
                         <InputGroup className="mb-3">
                             <InputGroup.Prepend>
-                                <InputGroup.Text>
-                                    학번
-                                </InputGroup.Text>
+                                <InputGroup.Text>학번</InputGroup.Text>
                             </InputGroup.Prepend>
-                            <FormControl 
+                            <FormControl
                                 onChange={(e) => setStudentId(e.target.value)}
                                 placeholder="예) 2021123123"
                             />
@@ -273,16 +269,14 @@ const Zoom = () => {
                     </Col>
                     <Col></Col>
                 </Row>
-                <Row className="justify-content-around">
+                <Row>
                     <Col></Col>
                     <Col>
                         <InputGroup className="mb-3">
                             <InputGroup.Prepend>
-                                <InputGroup.Text>
-                                    수업 비밀번호
-                                </InputGroup.Text>
+                                <InputGroup.Text>수업 비밀번호</InputGroup.Text>
                             </InputGroup.Prepend>
-                            <FormControl 
+                            <FormControl
                                 onChange={(e) => setPassWord(e.target.value)}
                                 placeholder="예) 1234"
                             />
@@ -290,21 +284,16 @@ const Zoom = () => {
                     </Col>
                     <Col></Col>
                 </Row>
-                <Row className="justify-content-around">
+                <Row>
                     <Col></Col>
                     <Col>
-                        <Button
-                            onClick={startMeeting}
-                            variant="primary"
-                            block
-                        >
+                        <Button onClick={startMeeting} variant="primary" block>
                             입장
                         </Button>
                     </Col>
                     <Col></Col>
                 </Row>
             </div>
-
             <div ref={divTL} style={{ display: "none" }}>
                 <div
                     style={{

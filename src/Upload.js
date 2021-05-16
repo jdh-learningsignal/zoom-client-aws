@@ -1,18 +1,28 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import './Upload.css';
+import React, { useState, useEffect, useRef } from 'react';
 import { API, Storage } from 'aws-amplify';
 import { createFiles as createFilesMutation } from './graphql/mutations';
 import { withAuthenticator} from '@aws-amplify/ui-react'
 import { createHmac } from 'crypto';
 import crypto from 'crypto';
 
+import {
+    Container,
+    InputGroup,
+    FormControl,
+    Form,
+    Row,
+    Col,
+    Button,
+    Badge
+} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 const Upload = () => {
     const [affiliation, setAffiliation] = useState('HYU');
     const [name, setName] = useState('');
     const [lectureName, setLectureName] = useState('');
     const [meetingNumber, setMeetingNumber] = useState('');
-    const [material, setMaterial] = useState({ name: '', hash: '' });
+    const [material, setMaterial] = useState({ name: "강의 자료 업로드 (PDF만 가능)", hash: '' });
     const startButtonRef = useRef(null);
 
     const onChangeFile = async (e) => {
@@ -20,11 +30,12 @@ const Upload = () => {
         
         const file = e.target.files[0];
         const hash = createHmac('sha256', file.name + new Date()).digest('hex');
-        setMaterial({ name: file.name, hash: hash });
         
         await Storage.put(hash, file);
         await insertFile(file.name, hash);
-        startButtonRef.current.style.display = "inline-block";
+        
+        setMaterial({ name: file.name, hash: hash });
+        startButtonRef.current.style.display = "block";
     };
 
     const insertFile = async (name, hash) => {
@@ -42,114 +53,109 @@ const Upload = () => {
     };
 
     return (
-        <div className="App">
-            <div 
-                style={{
-                    marginTop: "10%",
-                }}
-            >
-                <h6
-                    style={{
-                        fontWeight: "bold"
-                    }}
-                >
-                    학교
-                </h6>
-                <select
-                    onChange={e => setAffiliation(e.target.value)}
-                    style={{
-                            marginTop: "0px",
-                            paddingLeft: "10px",
-                            paddingRight: "10px",
-                            borderRadius: "5px",
-                            width: "230px",
-                            height: "25px",
-                            fontSize: "15px"
+        <Container fluid>
+            <Row>&nbsp;</Row>
+            <Row>&nbsp;</Row>
+            <Row>
+                <Col></Col>
+                <Col>
+                    <Form.Group>
+                        <Form.Control
+                            onChange={(e) => setAffiliation(e.target.value)}
+                            as="select"
+                            custom
+                        >
+                            <option value="HYU">한양대학교</option>
+                            <option value="KJWU">광주여자대학교</option>
+                            <option value="LTU">루터대학교</option>
+                            <option value="BSU">백석대학교</option>
+                            <option value="BSCU">백석문화대학교</option>
+                            <option value="SMU">상명대학교</option>
+                            <option value="EJU">을지대학교</option>
+                        </Form.Control>
+                    </Form.Group>
+                </Col>
+                <Col></Col>
+            </Row>
+            <Row>
+                <Col></Col>
+                <Col>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                            <InputGroup.Text>이름</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="예) 홍길동"
+                        />
+                    </InputGroup>
+                </Col>
+                <Col></Col>
+            </Row>
+            <Row>
+                <Col></Col>
+                <Col>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                            <InputGroup.Text>강의 제목</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl
+                            onChange={(e) => setLectureName(e.target.value)}
+                            placeholder="예) AI+X:인공지능 10주차"
+                        />
+                    </InputGroup>
+                </Col>
+                <Col></Col>
+            </Row>
+            <Row>
+                <Col></Col>
+                <Col>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Prepend>
+                            <InputGroup.Text>회의 ID</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl
+                            onChange={(e) => setMeetingNumber(e.target.value.replace(/ /gi, ""))}
+                            placeholder="예) 451 551 4600"
+                        />
+                    </InputGroup>
+                </Col>
+                <Col></Col>
+            </Row>
+
+            <Row>
+                <Col></Col>
+                <Col>
+                    <Form>
+                        <Form.File
+                            className="mb-3"
+                            onChange={onChangeFile}
+                            label={material.name}
+                            data-browse="파일 선택"
+                            custom
+                        />
+                    </Form>
+                </Col>
+                <Col></Col>
+            </Row>
+
+            <Row>
+                <Col></Col>
+                <Col>
+                    <Button 
+                        style={{
+                            display: "none"
                         }}
-                >
-                    <option value="HYU">한양대학교</option>
-                    <option value="KJWU">광주여자대학교</option>
-                    <option value="LTU">루터대학교</option>
-                    <option value="BSU">백석대학교</option>
-                    <option value="BSCU">백석문화대학교</option>
-                    <option value="SMU">상명대학교</option>
-                    <option value="EJU">을지대학교</option>
-                </select>
-            </div>
-            <div>
-                <h6
-                    style={{
-                        fontWeight: "bold",
-                    }}
-                >
-                    교수자 이름
-                </h6>
-                <input
-                    onChange={(e) =>
-                        setName(e.target.value)
-                    }
-                    placeholder="예) 홍길동"
-                    type="text"
-                    maxLength="20"
-                    style={{
-                        marginTop: "0px",
-                        marginBottom: "2px",
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        width: "230px",
-                        fontSize: "15px",
-                    }}
-                ></input>
-            </div>
-            <div>
-                <h6
-                    style={{
-                        fontWeight: "bold",
-                    }}
-                >
-                    강의 제목
-                </h6>
-                <input
-                    onChange={(e) =>
-                        setLectureName(e.target.value)
-                    }
-                    placeholder="예) AI+X:인공지능 10주차"
-                    type="text"
-                    maxLength="20"
-                    style={{
-                        marginTop: "0px",
-                        marginBottom: "2px",
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        width: "230px",
-                        fontSize: "15px",
-                    }}
-                ></input>
-            </div>
-            <div>
-                <h6
-                    style={{
-                        fontWeight: "bold",
-                    }}
-                >
-                    회의 ID
-                </h6>
-                <input
-                    onChange={(e) => setMeetingNumber(e.target.value.replace(/ /gi, ""))
-                    }
-                    placeholder="예) 451 551 4600"
-                    type="text"
-                    maxLength="20"
-                    style={{
-                        marginTop: "0px",
-                        marginBottom: "2px",
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        width: "230px",
-                        fontSize: "15px",
-                    }}
-                ></input>
-            </div>
+                        ref={startButtonRef}
+                        href={`/lecture/${material.hash}?a=${affiliation}&n=${name}&l=${lectureName}&m=${meetingNumber}`}
+                        block
+                    >
+                        강의 시작
+                    </Button>
+                </Col>
+                <Col></Col>
+            </Row>
+
             {/* <div>
                 <h6
                     style={{
@@ -183,56 +189,7 @@ const Upload = () => {
                     }}
                 ></input>
             </div> */}
-            <div>
-                <h6
-                    style={{
-                        fontWeight: "bold",
-                    }}
-                >
-                    강의자료 업로드 (PDF만 가능)
-                </h6>
-                <input
-                    onChange={onChangeFile}
-                    type="file"
-                    style={{
-                        marginTop: "0px",
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        width: "230px",
-                        fontSize: "15px",
-                        display: "inline",
-                    }}
-                ></input>
-            </div>
-
-            <Link
-                ref={startButtonRef}
-                to={`/lecture/${material.hash}?a=${affiliation}&n=${name}&l=${lectureName}&m=${meetingNumber}`}
-                style={{
-                    display: "none",
-                    backgroundColor: "#2D8CFF",
-                    color: "#ffffff",
-                    textDecoration: "none",
-                    paddingTop: "10px",
-                    paddingBottom: "10px",
-                    paddingLeft: "40px",
-                    paddingRight: "40px",
-                    borderRadius: "10px",
-                    cursor: "pointer",
-                    border: "none",
-                    outline: "none",
-                    textAlign: "center",
-                    width: "11%",
-                    margin: "auto",
-                    left: "44.5%",
-                    bottom: "28%",
-                    position: "fixed",
-                    textAlign: "center",
-                }}
-            >
-                강의 시작
-            </Link>
-        </div>
+        </Container>
     );
 };
 

@@ -1,6 +1,6 @@
 import { React, useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import jwt from "jsonwebtoken";
 import { useParams } from "react-router-dom";
@@ -14,6 +14,7 @@ import {
     createPages as createPagesMutation,
     createCurrentLectures as createCurrentLecturesMutation,
     updateCurrentLectures as updateCurrentLecturesMutation,
+    deleteCurrentLectures as deleteCurrentLecturesMutation,
 } from "./graphql/mutations";
 import { listTrafficss, getCurrentLectures } from "./graphql/queries";
 import config from "./config";
@@ -43,6 +44,9 @@ const Lecture = () => {
     const [currentGreens, setCurrentGreens] = useState(0);
     const [browserWidth, setBrowserWidth] = useState(window.innerWidth);
     const [fakeKey, setFakeKey] = useState(false);
+
+    const history = useHistory();
+
 
     const query = new URLSearchParams(useLocation().search);
     const affiliation = query.get("a");
@@ -395,6 +399,21 @@ const Lecture = () => {
         document.execCommand("copy");
     };
 
+    const onEndLecture = async () => {
+        const result = await API.graphql({
+            query: deleteCurrentLecturesMutation,
+            variables: {
+                input: {
+                    id: hash,
+                },
+            },
+        });
+
+        console.log(result);
+
+        return history.push('/admin');
+    };
+
     return (
         <div className="App">
             <Container fluid>
@@ -426,6 +445,7 @@ const Lecture = () => {
                                 position: "fixed",
                                 right: "27%",
                                 bottom: "13%",
+                                zIndex: 10000,
                             }}
                         >
                             &lt;
@@ -437,6 +457,7 @@ const Lecture = () => {
                                 position: "fixed",
                                 right: "24.5%",
                                 bottom: "13%",
+                                zIndex: 10000,
                             }}
                         >
                             &gt;
@@ -598,32 +619,18 @@ const Lecture = () => {
                                 position: "fixed",
                             }}
                         ></input>
-                        <Link
-                            to={`/admin`}
+                        <Button 
+                            onClick={onEndLecture} 
+                            variant="secondary"
+                            size="lg"
                             style={{
-                                marginTop: "50px",
-                                backgroundColor: "grey",
-                                color: "#ffffff",
-                                textDecoration: "none",
-                                paddingTop: "10px",
-                                paddingBottom: "10px",
-                                paddingLeft: "10px",
-                                paddingRight: "10px",
-                                borderRadius: "10px",
-                                cursor: "pointer",
-                                border: "none",
-                                outline: "none",
-                                textAlign: "center",
-                                width: "8%",
-                                margin: "auto",
                                 right: "5%",
                                 bottom: "5%",
                                 position: "fixed",
-                                textAlign: "center",
                             }}
                         >
                             강의 종료
-                        </Link>
+                        </Button>
                     </Col>
                 </Row>
             </Container>
